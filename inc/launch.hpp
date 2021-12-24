@@ -50,7 +50,6 @@ public:
       if (user.username == _.user.username) {
         if (user.passwd == _.user.passwd) {
           status = launch_status::success;
-          user.id = 0;
           return;
         } else {
           status = launch_status::error_passwd;
