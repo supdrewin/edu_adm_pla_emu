@@ -24,7 +24,6 @@ public:
 
   void add() {
     auto i{data.size()};
-    printf("%llu", i);
     printf("username: ");
     std::cin >> data.at(i).user.username;
     printf("passwd: ");

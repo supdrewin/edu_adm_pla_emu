@@ -1,8 +1,8 @@
 OBJS := \
 	main.o
 
-all: $(OBJS)
-	$(LINK.cc) $^
+main.elf: $(OBJS)
+	$(LINK.cc) -o $@ $^
 
 clean:
 	$(RM) $(OBJS) a.out

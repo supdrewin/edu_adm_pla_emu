@@ -2,3 +2,6 @@ inc/via/
 test/
 
 score.db
+
+*.elf
+*.o
