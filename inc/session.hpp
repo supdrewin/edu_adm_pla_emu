@@ -6,6 +6,7 @@
 #include "database.hpp"
 #include "platform.hh"
 #include "user.hh"
+#include "vaild.hh"
 #include "via/console.hpp"
 
 class session {
@@ -36,7 +37,6 @@ public:
   }
 
   void menu() {
-    int key;
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
     printf(
@@ -58,7 +58,8 @@ public:
         " \n                                                  "
         "\n" SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND);
 
-    std::cin >> key;
+    int key{};
+    check_cin(key);
     switch (key) {
     case 1:
       db.add(student);

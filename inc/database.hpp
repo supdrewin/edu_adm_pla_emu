@@ -10,6 +10,7 @@
 #include "platform.hh"
 #include "secure.hh"
 #include "user.hh"
+#include "vaild.hh"
 #include "via/array.hpp"
 
 using index_t = int;
@@ -30,7 +31,7 @@ public:
 
   void add(identity id) {
     CLEAR();
-    size_t num, i{data.size()};
+    size_t num{}, i{data.size()};
     std::string name;
 
   insert_username:
@@ -42,13 +43,13 @@ public:
 
   insert_number:
     printf("number: ");
-    std::cin >> num;
+    check_cin(num);
 
     if (find_number(num) != -1)
       goto insert_number;
 
     printf("score: ");
-    std::cin >> data.at(i).score;
+    check_cin(data.at(i).score);
 
     data[i]._user.username = data[i]._user.passwd = name;
     data[i]._user.id = (id == teacher ? 0 : 1000);
@@ -87,7 +88,7 @@ public:
   index_t find_score(size_t sc) {
     size_t i{};
     for (auto _ : data) {
-      if (sc == _.score)
+      if (_._user.id and sc == _.score)
         return i;
       ++i;
     }
