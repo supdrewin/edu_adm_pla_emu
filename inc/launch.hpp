@@ -22,7 +22,7 @@ class launch {
 
 public:
   launch() : status(), db(), unknown() {
-    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
 
     for (size_t i{}; status != success; ++i) {
@@ -44,17 +44,17 @@ public:
   void ask() {
     printf("Username: ");
     std::cin >> unknown.username;
-    printf("Passwd: " SGR_WHITE_FOREGROUND);
+    printf("Passwd: " SGR_BLACK_FOREGROUND);
     std::cin >> unknown.passwd;
-    printf(SGR_BLACK_FOREGROUND);
+    printf(SGR_WHITE_FOREGROUND);
   }
 
   void judge() {
     for (auto _ : db)
-      if (unknown.username == _.user.username) {
-        if (unknown.passwd == _.user.passwd) {
+      if (unknown.username == _._user.username) {
+        if (unknown.passwd == _._user.passwd) {
           status = success;
-          unknown.id = _.user.id;
+          unknown.id = _._user.id;
           return;
         } else {
           status = error_passwd;

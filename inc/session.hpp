@@ -15,17 +15,17 @@ class session {
   } cur;
 
   database db;
-  user _user;
+  user cur_user;
 
 public:
-  size_t _index;
+  size_t uindex;
 
-  session(struct user u) : cur(), db(), _user(u), _index() {
-    if (not _user.id) {
+  session(struct user u) : cur(), db(), cur_user(u), uindex() {
+    if (not cur_user.id) {
       while (cur == running)
         menu();
     } else {
-      this->index();
+      this->uindex_gen();
       this->print();
     }
   }
@@ -37,16 +37,16 @@ public:
 
   void menu() {
     int key;
-    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
     printf(
         SGR_GREEN_BACKGROUND
         "                                                  \n " SGR_RESET_ALL
         "                                                " SGR_GREEN_BACKGROUND
         " \n " SGR_RESET_ALL
-        "      1. add student                            " SGR_GREEN_BACKGROUND
+        "      1. add a student                          " SGR_GREEN_BACKGROUND
         " \n " SGR_RESET_ALL
-        "      2. delete student                         " SGR_GREEN_BACKGROUND
+        "      2. find a student                         " SGR_GREEN_BACKGROUND
         " \n " SGR_RESET_ALL
         "      3. show database                          " SGR_GREEN_BACKGROUND
         " \n " SGR_RESET_ALL
@@ -56,15 +56,15 @@ public:
         " \n " SGR_RESET_ALL
         "                                                " SGR_GREEN_BACKGROUND
         " \n                                                  "
-        "\n" SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND);
+        "\n" SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND);
 
     std::cin >> key;
     switch (key) {
     case 1:
-      this->db_add();
+      db.add(student);
       break;
     case 2:
-      this->db_earse();
+      this->submenu_find();
       break;
     case 3:
       this->print();
@@ -82,38 +82,34 @@ public:
 
   bool write() { return db.write(); }
 
-  void db_add() { db.add(); }
-  void db_earse() { db.earse(); }
+  void submenu_find() {}
 
-  void admin() { this->db_add(); }
-
-  // normal
-  void index() {
+  void uindex_gen() {
     for (size_t i{}; i < db.size(); ++i)
-      if (_user == db[i].user) {
-        _index = i;
+      if (cur_user == db[i]._user) {
+        uindex = i;
         break;
       }
   }
 
   void print(size_t i) {
-    std::cout << "student: " << db[i].user.username
+    std::cout << "student: " << db[i]._user.username
               << "\tnumber: " << db[i].number << "\tscore: " << db[i].score
               << '\n';
   }
 
   void print() {
-    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
 
-    if (not _user.id) {
+    if (not cur_user.id) {
       for (size_t i{}; i < db.size(); ++i)
-        if (db[i].user.id)
+        if (db[i]._user.id)
           this->print(i);
       PAUSE();
       return;
     }
-    this->print(_index);
+    this->print(uindex);
     PAUSE();
   }
 };

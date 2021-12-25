@@ -11,9 +11,11 @@ class gobal {
 
 public:
   gobal() : cur_user() {
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
     std::cout << logo;
     PAUSE();
+
     launch new_launch;
     this->cur_user = new_launch.result();
 

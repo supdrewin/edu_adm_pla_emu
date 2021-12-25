@@ -1,12 +1,17 @@
 #pragma once
 
+#include <cstddef>
+#include <fstream>
 #include <string>
 
-using user_id = size_t;
+enum identity {
+  teacher,
+  student,
+};
 
 struct user {
   std::string username, passwd;
-  user_id id;
+  size_t id;
 
   user() : username(), passwd(), id() {}
 
