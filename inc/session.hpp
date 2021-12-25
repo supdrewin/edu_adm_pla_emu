@@ -4,7 +4,9 @@
 #include <cstdio>
 
 #include "database.hpp"
+#include "platform.hh"
 #include "user.hh"
+#include "via/console.hpp"
 
 class session {
   struct user user;
@@ -27,18 +29,33 @@ public:
     }
   }
 
+  ~session() {
+    printf(SGR_RESET_ALL "\n");
+    CLEAR();
+  }
+
   void menu() {
     int key;
-
-    printf("\x1b[32;1m##################################################\n");
-    printf("#                                                #\n");
-    printf("#      1. add student                            #\n");
-    printf("#      2. delete student                         #\n");
-    printf("#      3. exit                                   #\n");
-    printf("#      4. show database                          #\n");
-    printf("#      5. sync database                          #\n");
-    printf("#                                                #\n");
-    printf("##################################################\x1b[0m\n");
+    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    CLEAR();
+    printf(
+        SGR_GREEN_BACKGROUND
+        "                                                  \n " SGR_RESET_ALL
+        "                                                " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "      1. add student                            " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "      2. delete student                         " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "      3. show database                          " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "      4. sync database                          " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "      5. exit                                   " SGR_GREEN_BACKGROUND
+        " \n " SGR_RESET_ALL
+        "                                                " SGR_GREEN_BACKGROUND
+        " \n                                                  "
+        "\n" SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND);
 
     std::cin >> key;
     switch (key) {
@@ -49,13 +66,13 @@ public:
       this->db_earse();
       break;
     case 3:
-      this->cur = finished;
-      break;
-    case 4:
       this->print();
       break;
-    case 5:
+    case 4:
       this->write();
+      break;
+    case 5:
+      this->cur = finished;
       break;
     default:
       break;
@@ -85,11 +102,16 @@ public:
   }
 
   void print() {
+    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    CLEAR();
+
     if (not user.id) {
       for (size_t i{}; i < db.size(); ++i)
         this->print(i);
+      PAUSE();
       return;
     }
     this->print(_index);
+    PAUSE();
   }
 };

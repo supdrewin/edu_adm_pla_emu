@@ -6,8 +6,10 @@
 #include <fstream>
 #include <iostream>
 
+#include "platform.hh"
+#include "secure.hh"
 #include "user.hh"
-#include "via/arrary.hpp"
+#include "via/array.hpp"
 
 struct user_data {
   unsigned number;
@@ -28,6 +30,7 @@ public:
   size_t size() { return this->data.size(); }
 
   void add() {
+    CLEAR();
     auto i{data.size()};
     printf("username: ");
     std::cin >> data.at(i).user.username;
@@ -50,9 +53,9 @@ public:
 
     { fout << "username\tpasswd\tnumber\tid\tscore\n"; }
     for (size_t i{}; i < data.size(); ++i) {
-      fout << data[i].user.username << '\t' << data[i].user.passwd << '\t'
-           << data[i].number << '\t' << data[i].user.id << '\t' << data[i].score
-           << '\n';
+      fout << data[i].user.username << '\t'
+           << secure::write(data[i].user.passwd) << '\t' << data[i].number
+           << '\t' << data[i].user.id << '\t' << data[i].score << '\n';
     }
     return true;
   }
@@ -74,6 +77,7 @@ public:
     for (size_t i{}; not fin.eof(); ++i) {
       fin >> data.at(i).user.username >> data[i].user.passwd >>
           data[i].number >> data[i].user.id >> data[i].score;
+      secure::read(data[i].user.passwd);
     }
     data.resize(data.size() - 1);
     return true;

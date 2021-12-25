@@ -8,6 +8,7 @@
 #include "database.hpp"
 #include "platform.hh"
 #include "user.hh"
+#include "via/console.hpp"
 
 enum launch_status { unknown_username, error_passwd, success };
 
@@ -18,7 +19,8 @@ class launch {
 
 public:
   launch() : status(), user(), db() {
-    __clear();
+    printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
+    CLEAR();
 
     for (size_t i{}; status != launch_status::success; ++i) {
       i == 5 ? printf("\x1b[31;1mError more than 5 time, aborting...\x1b[0m\n"),
@@ -27,7 +29,7 @@ public:
     }
 
     printf("\x1b[32;1mLogin success!!\x1b[0m\n");
-    __sleep(1), __clear();
+    SLEEP(1), CLEAR();
   }
 
   struct user result() {
@@ -35,10 +37,11 @@ public:
   }
 
   void ask() {
-    printf("\x1b[33;1mUsername:\x1b[0m ");
+    printf("Username: ");
     std::cin >> user.username;
-    printf("\x1b[33;1mPasswd:\x1b[0m ");
+    printf("Passwd: " SGR_WHITE_FOREGROUND);
     std::cin >> user.passwd;
+    printf(SGR_BLACK_FOREGROUND);
   }
 
   void judge() {
