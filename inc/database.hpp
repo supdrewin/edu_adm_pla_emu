@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 
@@ -47,9 +48,10 @@ public:
       return false;
     }
 
+    { fout << "username\tpasswd\tnumber\tid\tscore\n"; }
     for (size_t i{}; i < data.size(); ++i) {
-      fout << data[i].user.username << ' ' << data[i].user.passwd << ' '
-           << data[i].number << ' ' << data[i].user.id << ' ' << data[i].score
+      fout << data[i].user.username << '\t' << data[i].user.passwd << '\t'
+           << data[i].number << '\t' << data[i].user.id << '\t' << data[i].score
            << '\n';
     }
     return true;
@@ -61,6 +63,14 @@ public:
       this->write();
       return false;
     }
+    std::string header[5];
+    for (auto &_ : header)
+      fin >> _;
+    (header[0] == "username" and header[1] == "passwd" and
+     header[2] == "number" and header[3] == "id" and header[4] == "score")
+        ? void(0)
+        : exit(EXIT_FAILURE);
+
     for (size_t i{}; not fin.eof(); ++i) {
       fin >> data.at(i).user.username >> data[i].user.passwd >>
           data[i].number >> data[i].user.id >> data[i].score;
