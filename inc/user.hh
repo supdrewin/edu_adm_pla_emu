@@ -9,4 +9,7 @@ struct user {
   user_id id;
 
   user() : username(), passwd(), id() {}
+
+  bool operator==(user r) { return this->username == r.username; }
+  bool operator!=(user r) { return this->username != r.username; }
 };

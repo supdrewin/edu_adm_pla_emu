@@ -13,7 +13,9 @@ struct user_data {
   struct user user;
   unsigned short score;
 
-  user_data() : number(), user(), score() {}
+  size_t key;
+
+  user_data() : number(), user(), score(), key() {}
 };
 
 class database {
@@ -21,6 +23,8 @@ class database {
 
 public:
   database() : data() { this->read(); }
+
+  size_t size() { return this->data.size(); }
 
   void add() {
     auto i{data.size()};
@@ -64,6 +68,8 @@ public:
     data.resize(data.size() - 1);
     return true;
   }
+
+  auto operator[](size_t i) { return data.operator[](i); }
 
   auto begin() { return data.begin(); }
   auto end() { return data.end(); }
