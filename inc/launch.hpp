@@ -10,59 +10,58 @@
 #include "user.hh"
 #include "via/console.hpp"
 
-enum launch_status { unknown_username, error_passwd, success };
-
 class launch {
-  launch_status status;
-  struct user user;
+  enum status {
+    unknown_username,
+    error_passwd,
+    success,
+  } status;
+
   database db;
+  user unknown;
 
 public:
-  launch() : status(), user(), db() {
+  launch() : status(), db(), unknown() {
     printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
     CLEAR();
 
-    for (size_t i{}; status != launch_status::success; ++i) {
-      i == 5 ? printf("\x1b[31;1mError more than 5 time, aborting...\x1b[0m\n"),
-          exit(EXIT_FAILURE) : void(0);
+    for (size_t i{}; status != success; ++i) {
+      i == 5 ? (printf(SGR_RED_FOREGROUND SGR_BOLD
+                       "Error more than 5 time, aborting...\n" SGR_RESET_ALL),
+                SLEEP(1), CLEAR(), exit(EXIT_FAILURE))
+             : void(0);
       ask(), judge();
     }
 
-    printf("\x1b[32;1mLogin success!!\x1b[0m\n");
+    printf(SGR_GREEN_FOREGROUND SGR_BOLD "Login success!!\n" SGR_RESET_ALL);
     SLEEP(1), CLEAR();
   }
 
   struct user result() {
-    return user;
+    return unknown;
   }
 
   void ask() {
     printf("Username: ");
-    std::cin >> user.username;
+    std::cin >> unknown.username;
     printf("Passwd: " SGR_WHITE_FOREGROUND);
-    std::cin >> user.passwd;
+    std::cin >> unknown.passwd;
     printf(SGR_BLACK_FOREGROUND);
   }
 
   void judge() {
-    if (user.username == "root")
-      if (user.passwd == "root") {
-        status = launch_status::success;
-        return;
-      }
-
     for (auto _ : db)
-      if (user.username == _.user.username) {
-        if (user.passwd == _.user.passwd) {
-          status = launch_status::success;
-          user.id = _.user.id;
+      if (unknown.username == _.user.username) {
+        if (unknown.passwd == _.user.passwd) {
+          status = success;
+          unknown.id = _.user.id;
           return;
         } else {
-          status = launch_status::error_passwd;
+          status = error_passwd;
           return;
         }
       }
 
-    status = launch_status::unknown_username;
+    status = unknown_username;
   }
 };

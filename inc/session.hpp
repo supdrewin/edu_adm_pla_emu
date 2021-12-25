@@ -9,18 +9,19 @@
 #include "via/console.hpp"
 
 class session {
-  struct user user;
-  database db;
-  size_t _index;
-
   enum status {
-    finished,
     running,
+    finished,
   } cur;
 
+  database db;
+  user _user;
+
 public:
-  session(struct user u) : user(u), db(), _index(), cur(running) {
-    if (not user.id) {
+  size_t _index;
+
+  session(struct user u) : cur(), db(), _user(u), _index() {
+    if (not _user.id) {
       while (cur == running)
         menu();
     } else {
@@ -89,7 +90,7 @@ public:
   // normal
   void index() {
     for (size_t i{}; i < db.size(); ++i)
-      if (user == db[i].user) {
+      if (_user == db[i].user) {
         _index = i;
         break;
       }
@@ -105,9 +106,10 @@ public:
     printf(SGR_WHITE_BACKGROUND SGR_BLACK_FOREGROUND "\n");
     CLEAR();
 
-    if (not user.id) {
+    if (not _user.id) {
       for (size_t i{}; i < db.size(); ++i)
-        this->print(i);
+        if (db[i].user.id)
+          this->print(i);
       PAUSE();
       return;
     }
