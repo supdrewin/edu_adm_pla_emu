@@ -12,6 +12,7 @@
 
 class launch {
   enum status {
+    init_status,
     unknown_username,
     error_passwd,
     success,
@@ -21,7 +22,11 @@ class launch {
   user unknown;
 
 public:
-  launch() : status(), db(), unknown() {
+  launch() : status(), db(), unknown() {}
+
+  void new_launch() {
+    db.clear(), db.read(), status = init_status;
+
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
 
@@ -37,9 +42,7 @@ public:
     SLEEP(1), CLEAR();
   }
 
-  struct user result() {
-    return unknown;
-  }
+  user result() { return unknown; }
 
   void ask() {
     printf("Username: ");

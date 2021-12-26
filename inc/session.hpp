@@ -15,7 +15,7 @@ class session {
   enum status {
     running,
     finished,
-  };
+  } cur;
 
   user_database db;
   user cur_user;
@@ -23,21 +23,13 @@ class session {
 public:
   size_t uindex;
 
-  session(user u) : db(), cur_user(u), uindex() {
-    uindex_gen();
-
-    if (not cur_user.id)
-      admin_menu();
-    else
-      user_menu();
-
-    db[uindex].u = cur_user;
+  session(user u) : cur(), db(), cur_user(u), uindex() {
+    uindex_gen(), (cur_user.id ? user_menu() : admin_menu());
   }
 
-  ~session() {
-    printf(SGR_RESET_ALL "\n");
-    CLEAR();
-  }
+  ~session() { printf(SGR_RESET_ALL "\n"), CLEAR(); }
+
+  bool should_exit() { return cur == finished; }
 
   void admin_menu() {
     status lock{};
@@ -67,8 +59,12 @@ public:
       case 6:
         this->user_settings();
         break;
+      case 7:
+        lock = finished;
+        continue;
       case 0:
         lock = finished;
+        cur = finished;
         continue;
       default:
         continue;
@@ -166,11 +162,11 @@ public:
         PAUSE();
         break;
       case 2:
-        modify();
+        modify(), uindex_gen();
         index = db.size() - 1;
         break;
       case 3:
-        earse();
+        earse(), uindex_gen();
         lock = finished;
         continue;
       case 0:
@@ -199,6 +195,10 @@ public:
       case 2:
         user_settings();
         break;
+      case 3:
+        lock = finished;
+        cur = finished;
+        continue;
       case 0:
         lock = finished;
         continue;
@@ -246,7 +246,7 @@ public:
                                 "please try again :(\n"),
                          true)
                       : (printf("Password changed!!\n"), false));
-    cur_user.passwd = p2;
+    db[uindex].u.passwd = cur_user.passwd = p2;
     SLEEP(1);
   }
 

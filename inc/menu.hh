@@ -9,7 +9,7 @@
 static const std::vector<std::string> menu_main{
     "Add a student",     "Find a student",    "Import from database",
     "Show the database", "Sync the database", "Account settings",
-    "Exit and Save",
+    "Logout this user",  "Exit program",
 };
 
 static const std::vector<std::string> menu_find{
@@ -22,7 +22,8 @@ static const std::vector<std::string> menu_find{
 static const std::vector<std::string> menu_user{
     "Show my scores",
     "Account settings",
-    "Loging out and Exit",
+    "Logout this user",
+    "Exit program",
 };
 
 static const std::vector<std::string> settings{

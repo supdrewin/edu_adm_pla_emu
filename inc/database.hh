@@ -17,9 +17,7 @@ public:
   bool earse(size_t index) {
     if (index >= data.size())
       return false;
-    for (size_t i{index}; i + 1 < data.size(); ++i)
-      data[i] = data[i + 1];
-    data.resize(data.size() - 1);
+    data.erase(data.begin() + index);
     return true;
   }
 

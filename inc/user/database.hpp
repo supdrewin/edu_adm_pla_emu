@@ -45,15 +45,6 @@ public:
     data.push_back(tmp);
   }
 
-  bool earse(size_t index) {
-    if (index >= data.size())
-      return false;
-    for (size_t i{index}; i + 1 < data.size(); ++i)
-      data[i] = data[i + 1];
-    data.resize(data.size() - 1);
-    return true;
-  }
-
   index_t find_username(std::string name) {
     index_t i{};
     for (auto _ : data) {
@@ -126,4 +117,6 @@ public:
       data.push_back(tmp);
     }
   }
+
+  void clear() { data.clear(); }
 };

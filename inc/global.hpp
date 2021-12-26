@@ -6,20 +6,22 @@
 #include "user.hh"
 #include "user/database.hpp"
 
-class global {
-  user cur_user;
+struct global {
+  global() {
+    splash();
+    launch l;
 
-public:
-  global() : cur_user() {
+    while (true) {
+      l.new_launch();
+      session new_session(l.result());
+      new_session.write();
+      if (new_session.should_exit())
+        break;
+    }
+  }
+
+  void splash() {
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
-    CLEAR();
-    std::cout << logo;
-    SLEEP(1);
-
-    launch new_launch;
-    this->cur_user = new_launch.result();
-
-    session new_session(cur_user);
-    new_session.write();
+    CLEAR(), std::cout << logo, SLEEP(1);
   }
 };
