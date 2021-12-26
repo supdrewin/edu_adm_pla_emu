@@ -197,10 +197,10 @@ public:
         break;
       case 3:
         lock = finished;
-        cur = finished;
         continue;
       case 0:
         lock = finished;
+        cur = finished;
         continue;
       default:
         continue;
