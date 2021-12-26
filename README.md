@@ -1,1 +1,3 @@
-I\'m still thinking how to name this repository...
+# Educational Administration Platform Emulator
+
+_TODO: ..._
