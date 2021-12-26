@@ -4,10 +4,10 @@
 #include <cstdio>
 
 #include "console.hh"
-#include "database.hpp"
 #include "menu.hh"
 #include "platform.hh"
 #include "user.hh"
+#include "user/database.hpp"
 #include "vaild.hh"
 
 class session {
@@ -16,7 +16,7 @@ class session {
     finished,
   } cur;
 
-  database db;
+  user_database db;
   user cur_user;
 
 public:
@@ -45,6 +45,7 @@ public:
 
     int key{};
     check_cin(key);
+    CLEAR();
 
     switch (key) {
     case 1:
@@ -75,36 +76,40 @@ public:
   void admin_submenu_find() {
     menu(menu_find, 4);
 
-    auto find_name = [](database &db) -> index_t {
+    auto find_name = [this]() -> index_t {
       std::string name;
+      printf("Name: ");
       std::cin >> name;
       return db.find_username(name);
     };
 
-    auto find_number = [](database &db) -> index_t {
+    auto find_number = [this]() -> index_t {
       size_t number;
+      printf("Number: ");
       check_cin(number);
       return db.find_number(number);
     };
 
-    auto find_score = [](database &db) -> index_t {
+    auto find_score = [this]() -> index_t {
       size_t score;
+      printf("Score: ");
       check_cin(score);
       return db.find_score(score);
     };
 
     int key{};
     check_cin(key);
+    CLEAR();
 
     switch (key) {
     case 1:
-      key = find_name(db);
+      key = find_name();
       break;
     case 2:
-      key = find_number(db);
+      key = find_number();
       break;
     case 3:
-      key = find_score(db);
+      key = find_score();
       break;
     default:
       return;
@@ -112,6 +117,7 @@ public:
 
     if (key == -1) {
       printf("User not found :(\n");
+      SLEEP(1);
       return;
     }
 
@@ -121,13 +127,26 @@ public:
   void admin_submenu_manage(index_t index) {
     menu(manage_user, 3);
 
+    auto modify = [index, this]() {
+      printf("Original information of this student:\n");
+      this->print(index);
+      db.earse(index);
+      printf("Insert the new information of this student:\n");
+      db.add(student);
+    };
+
+    auto earse = [index, this]() { db.earse(index); };
+
     int key{};
     check_cin(key);
+    CLEAR();
 
     switch (key) {
     case 1:
+      modify();
       break;
     case 2:
+      earse();
       break;
     default:
       break;

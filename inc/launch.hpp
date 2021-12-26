@@ -6,9 +6,9 @@
 #include <string>
 
 #include "console.hh"
-#include "database.hpp"
 #include "platform.hh"
 #include "user.hh"
+#include "user/database.hpp"
 
 class launch {
   enum status {
@@ -17,7 +17,7 @@ class launch {
     success,
   } status;
 
-  database db;
+  user_database db;
   user unknown;
 
 public:

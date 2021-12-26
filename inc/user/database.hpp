@@ -15,13 +15,12 @@
 
 using index_t = int;
 
-class database : public _database<user_data> {
+class user_database : public database<user_data> {
 public:
-  database() { this->read(); }
+  user_database() { this->read(); }
 
   void add(identity id) {
     user_data tmp;
-    CLEAR();
 
   insert_username:
     printf("username: ");

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "database.hpp"
 #include "launch.hpp"
 #include "logo.hh"
 #include "session.hpp"
 #include "user.hh"
+#include "user/database.hpp"
 
 class global {
   user cur_user;

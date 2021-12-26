@@ -3,11 +3,13 @@
 #include <cstddef>
 #include <vector>
 
-template <class _Tp> class _database {
+template <class _Tp> class database {
 protected:
   std::vector<_Tp> data;
 
 public:
+  database() : data() {}
+
   size_t size() { return this->data.size(); }
 
   void add(_Tp tmp) { data.push_back(tmp); }
