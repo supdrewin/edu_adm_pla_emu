@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "via/console.hpp"
+#include "console.hh"
 
 namespace secure {
 

@@ -2,8 +2,8 @@
 
 #include <string>
 
+#include "console.hh"
 #include "platform.hh"
-#include "via/console.hpp"
 
 static const std::string menu_main[]{
     "Add a student",     "Find a student",    "Import from database",
