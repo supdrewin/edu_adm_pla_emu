@@ -6,11 +6,11 @@
 #include "session.hpp"
 #include "user.hh"
 
-class gobal {
+class global {
   user cur_user;
 
 public:
-  gobal() : cur_user() {
+  global() : cur_user() {
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
     std::cout << logo;

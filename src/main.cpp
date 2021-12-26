@@ -1,6 +1,6 @@
-#include "gobal.hpp"
+#include "global.hpp"
 
 int main(int, char **) {
-  gobal start;
+  global start;
   return 0;
 }

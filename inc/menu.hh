@@ -29,6 +29,10 @@ static const std::string settings[]{
     "Return to main menu",
 };
 
+static const std::string manage_user[]{
+    "",
+};
+
 static auto menu(const std::string *str, size_t num) -> void {
   printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
   CLEAR();

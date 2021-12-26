@@ -75,13 +75,50 @@ public:
   void admin_submenu_find() {
     menu(menu_find, 4);
 
+    auto find_name = [](database &db) -> index_t {
+      std::string name;
+      std::cin >> name;
+      return db.find_username(name);
+    };
+
+    auto find_number = [](database &db) -> index_t {
+      size_t number;
+      check_cin(number);
+      return db.find_number(number);
+    };
+
+    auto find_score = [](database &db) -> index_t {
+      size_t score;
+      check_cin(score);
+      return db.find_score(score);
+    };
+
     int key{};
     check_cin(key);
+
     switch (key) {
-    default:
+    case 1:
+      key = find_name(db);
       break;
+    case 2:
+      key = find_number(db);
+      break;
+    case 3:
+      key = find_score(db);
+      break;
+    default:
+      return;
     }
+
+    if (key == -1) {
+      printf("User not found :(\n");
+      return;
+    }
+
+    admin_submenu_manage(key);
   }
+
+  void admin_submenu_manage(index_t index) {}
 
   void user_menu() {
     menu(menu_user, 3);
