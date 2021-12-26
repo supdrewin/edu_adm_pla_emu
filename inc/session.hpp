@@ -170,7 +170,7 @@ public:
     }
   }
 
-  bool write() { return db.write(); }
+  void write() { db.write(); }
 
   void change_passwd() {
     std::string p1, p2;

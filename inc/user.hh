@@ -17,3 +17,9 @@ struct user {
   bool operator==(user r) { return this->username == r.username; }
   bool operator!=(user r) { return this->username != r.username; }
 };
+
+struct user_data {
+  user u;
+  size_t number, score;
+  user_data() : u(), number(), score() {}
+};

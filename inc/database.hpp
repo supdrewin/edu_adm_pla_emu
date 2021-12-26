@@ -6,8 +6,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <vector>
 
+#include "database.hh"
 #include "platform.hh"
 #include "secure.hh"
 #include "user.hh"
@@ -15,19 +15,9 @@
 
 using index_t = int;
 
-struct user_data {
-  user u;
-  size_t number, score;
-  user_data() : u(), number(), score() {}
-};
-
-class database {
-  std::vector<user_data> data;
-
+class database : public _database<user_data> {
 public:
-  database() : data() { this->read(); }
-
-  size_t size() { return this->data.size(); }
+  database() { this->read(); }
 
   void add(identity id) {
     user_data tmp;
@@ -94,7 +84,7 @@ public:
     return -1;
   }
 
-  bool write(const char *filename = "${database}") {
+  void write(const char *filename = "${database}") {
     std::ofstream ofs(filename);
 
     ofs << "username\tpasswd\tnumber\tid\tscore";
@@ -111,7 +101,6 @@ public:
 
     if (not default_admin)
       ofs << "\nroot\t" << secure::write("root") << "\t0\t0\t0";
-    return true;
   }
 
   void read(const char *filename = "${database}") {
@@ -136,9 +125,4 @@ public:
       data.push_back(tmp);
     }
   }
-
-  user_data &operator[](size_t i) { return data.operator[](i); }
-
-  auto begin() { return data.begin(); }
-  auto end() { return data.end(); }
 };
