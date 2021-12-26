@@ -6,15 +6,26 @@
 #include "via/console.hpp"
 
 static const std::string menu_main[]{
-    "add a student", "find a student", "show database",
-    "sync database", "exit and save",
+    "Add a student", "Find a student", "Import database(E)",
+    "Show database", "Sync database",  "Exit and save",
 };
 
 static const std::string menu_find[]{
-    "find student name",
-    "find student number",
-    "find student score",
-    "return to main menu",
+    "Find student name",
+    "Find student number",
+    "Find student score",
+    "Return to main menu",
+};
+
+static const std::string menu_user[]{
+    "Show my scores",
+    "Account settings",
+    "Loging out and Exit",
+};
+
+static const std::string settings[]{
+    "Change my password",
+    "Return to main menu",
 };
 
 static auto menu(const std::string *str, size_t num) -> void {

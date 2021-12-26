@@ -137,7 +137,7 @@ public:
     }
   }
 
-  auto operator[](size_t i) { return data.operator[](i); }
+  user_data &operator[](size_t i) { return data.operator[](i); }
 
   auto begin() { return data.begin(); }
   auto end() { return data.end(); }

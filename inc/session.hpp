@@ -22,14 +22,17 @@ class session {
 public:
   size_t uindex;
 
-  session(struct user u) : cur(), db(), cur_user(u), uindex() {
-    if (not cur_user.id) {
+  session(user u) : cur(), db(), cur_user(u), uindex() {
+    uindex_gen();
+
+    if (not cur_user.id)
       while (cur == running)
         admin_menu();
-    } else {
-      this->uindex_gen();
-      this->print();
-    }
+    else
+      while (cur == running)
+        user_menu();
+
+    db[uindex].u = cur_user;
   }
 
   ~session() {
@@ -48,12 +51,14 @@ public:
       db.add(student);
       break;
     case 2:
-      this->submenu_find();
+      this->admin_submenu_find();
       break;
     case 3:
-      this->print();
       break;
     case 4:
+      this->print();
+      break;
+    case 5:
       this->write();
       break;
     case 0:
@@ -64,7 +69,7 @@ public:
     }
   }
 
-  void submenu_find() {
+  void admin_submenu_find() {
     menu(menu_find, 4);
 
     int key{};
@@ -75,7 +80,60 @@ public:
     }
   }
 
+  void user_menu() {
+    menu(menu_user, 3);
+
+    int key{};
+    check_cin(key);
+
+    switch (key) {
+    case 1:
+      this->print();
+      break;
+    case 2:
+      user_settings();
+      break;
+    case 0:
+      this->cur = finished;
+      break;
+    default:
+      break;
+    }
+  }
+
+  void user_settings() {
+    menu(settings, 2);
+
+    int key{};
+    check_cin(key);
+
+    switch (key) {
+    case 1:
+      change_passwd();
+      break;
+    case 0:
+      this->cur = finished;
+      break;
+    default:
+      break;
+    }
+  }
+
   bool write() { return db.write(); }
+
+  void change_passwd() {
+    std::string p1, p2;
+    do {
+      printf("Please insert your new password: ");
+      std::cin >> p1;
+      printf("Please insert previous again: ");
+      std::cin >> p2;
+    } while (
+        p1 != p2
+            ? (printf("Couldn't pick your two input,please try again"), true)
+            : (printf("Password changed!!"), false));
+    cur_user.passwd = p2;
+  }
 
   void uindex_gen() {
     for (size_t i{}; i < db.size(); ++i)
