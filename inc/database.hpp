@@ -94,7 +94,7 @@ public:
     return -1;
   }
 
-  bool write(const char *filename = "score.db") {
+  bool write(const char *filename = "${database}") {
     std::ofstream ofs(filename);
 
     ofs << "username\tpasswd\tnumber\tid\tscore";
@@ -114,7 +114,7 @@ public:
     return true;
   }
 
-  void read(const char *filename = "score.db") {
+  void read(const char *filename = "${database}") {
     std::ifstream ifs(filename);
     if (not ifs.good())
       this->write();

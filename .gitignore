@@ -1,4 +1,4 @@
-score.db
+${database}
 
 *.elf
 *.o
