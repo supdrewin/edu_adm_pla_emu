@@ -98,7 +98,7 @@ public:
   void read(const char *filename = "${database}") {
     std::ifstream ifs(filename);
     if (not ifs.good())
-      this->write();
+      this->write(), ifs.open(filename);
 
     std::string header[5];
     for (auto &_ : header)
