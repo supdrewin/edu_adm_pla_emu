@@ -18,12 +18,12 @@ class session {
   } cur;
 
   user_database db;
-  user cur_user;
+  base_user cur_user;
 
 public:
   size_t uindex;
 
-  session(user u) : cur(), db(), cur_user(u), uindex() {
+  session(base_user u) : cur(), db(), cur_user(u), uindex() {
     uindex_gen(), (cur_user.id ? user_menu() : admin_menu());
   }
 
@@ -43,7 +43,7 @@ public:
 
       switch (key) {
       case 1:
-        db.add(student);
+        db.add();
         break;
       case 2:
         this->admin_submenu_find();
@@ -259,7 +259,7 @@ public:
   }
 
   void print(size_t i) {
-    std::cout << "student: " << db[i].u.username << "\tnumber: " << db[i].number
+    std::cout << "student: " << db[i].u.username << "\tnumber: " << db[i].num
               << "\tscore: " << db[i].score << '\n';
   }
 

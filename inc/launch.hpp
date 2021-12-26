@@ -11,6 +11,8 @@
 #include "user/database.hpp"
 
 class launch {
+  using user_type = base_user;
+
   enum status {
     init_status,
     unknown_username,
@@ -19,7 +21,7 @@ class launch {
   } status;
 
   user_database db;
-  user unknown;
+  user_type unknown;
 
 public:
   launch() : status(), db(), unknown() {}
@@ -42,7 +44,7 @@ public:
     SLEEP(1), CLEAR();
   }
 
-  user result() { return unknown; }
+  user_type result() { return unknown; }
 
   void ask() {
     printf("Username: ");

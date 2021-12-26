@@ -20,8 +20,8 @@ class user_database : public database<user_data> {
 public:
   user_database() { this->read(); }
 
-  void add(identity id) {
-    user_data tmp;
+  void add(user_identity id = student) {
+    user_data tmp{id};
 
   insert_username:
     printf("username: ");
@@ -32,16 +32,15 @@ public:
 
   insert_number:
     printf("number: ");
-    check_cin(tmp.number);
+    check_cin(tmp.num);
 
-    if (find_number(tmp.number) != -1)
+    if (find_number(tmp.num) != -1)
       goto insert_number;
 
     printf("score: ");
     check_cin(tmp.score);
 
     tmp.u.passwd = tmp.u.username;
-    tmp.u.id = (id == teacher ? 0 : 1000);
     data.push_back(tmp);
   }
 
@@ -58,7 +57,7 @@ public:
   index_t find_number(size_t num) {
     index_t i{};
     for (auto _ : data) {
-      if (num == _.number)
+      if (num == _.num)
         return i;
       ++i;
     }
@@ -84,8 +83,8 @@ public:
 
     for (auto _ : data) {
       ofs << '\n'
-          << _.u.username << '\t' << secure::write(_.u.passwd) << '\t'
-          << _.number << '\t' << _.u.id << '\t' << _.score;
+          << _.u.username << '\t' << secure::write(_.u.passwd) << '\t' << _.num
+          << '\t' << _.u.id << '\t' << _.score;
 
       if (not default_admin)
         default_admin = (_.u.username == "root");
@@ -111,8 +110,7 @@ public:
 
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
-      ifs >> tmp.u.username >> tmp.u.passwd >> tmp.number >> tmp.u.id >>
-          tmp.score;
+      ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id >> tmp.score;
       secure::read(tmp.u.passwd);
       data.push_back(tmp);
     }
