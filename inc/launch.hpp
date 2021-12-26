@@ -51,10 +51,10 @@ public:
 
   void judge() {
     for (auto _ : db)
-      if (unknown.username == _._user.username) {
-        if (unknown.passwd == _._user.passwd) {
+      if (unknown.username == _.u.username) {
+        if (unknown.passwd == _.u.passwd) {
           status = success;
-          unknown.id = _._user.id;
+          unknown.id = _.u.id;
           return;
         } else {
           status = error_passwd;

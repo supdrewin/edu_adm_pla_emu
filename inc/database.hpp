@@ -16,9 +16,9 @@
 using index_t = int;
 
 struct user_data {
-  user _user;
+  user u;
   size_t number, score;
-  user_data() : _user(), number(), score() {}
+  user_data() : u(), number(), score() {}
 };
 
 class database {
@@ -51,8 +51,8 @@ public:
     printf("score: ");
     check_cin(data.at(i).score);
 
-    data[i]._user.username = data[i]._user.passwd = name;
-    data[i]._user.id = (id == teacher ? 0 : 1000);
+    data[i].u.username = data[i].u.passwd = name;
+    data[i].u.id = (id == teacher ? 0 : 1000);
     data[i].number = num;
   }
 
@@ -68,7 +68,7 @@ public:
   index_t find_username(std::string name) {
     size_t i{};
     for (auto _ : data) {
-      if (name == _._user.username)
+      if (name == _.u.username)
         return i;
       ++i;
     }
@@ -88,7 +88,7 @@ public:
   index_t find_score(size_t sc) {
     size_t i{};
     for (auto _ : data) {
-      if (_._user.id and sc == _.score)
+      if (_.u.id and sc == _.score)
         return i;
       ++i;
     }
@@ -103,12 +103,12 @@ public:
 
     for (size_t i{}; i < data.size(); ++i) {
       ofs << '\n'
-          << data[i]._user.username << '\t'
-          << secure::write(data[i]._user.passwd) << '\t' << data[i].number
-          << '\t' << data[i]._user.id << '\t' << data[i].score;
+          << data[i].u.username << '\t' << secure::write(data[i].u.passwd)
+          << '\t' << data[i].number << '\t' << data[i].u.id << '\t'
+          << data[i].score;
 
       if (not default_admin)
-        default_admin = (data[i]._user.username == "root");
+        default_admin = (data[i].u.username == "root");
     }
 
     if (not default_admin)
@@ -131,9 +131,9 @@ public:
         : exit(1);
 
     for (size_t i{}; not ifs.eof(); ++i) {
-      ifs >> data.at(i)._user.username >> data[i]._user.passwd >>
-          data[i].number >> data[i]._user.id >> data[i].score;
-      secure::read(data[i]._user.passwd);
+      ifs >> data.at(i).u.username >> data[i].u.passwd >> data[i].number >>
+          data[i].u.id >> data[i].score;
+      secure::read(data[i].u.passwd);
     }
   }
 
