@@ -7,3 +7,6 @@ CXXFLAGS += \
 	-Wextra \
 	-pedantic \
 	-Weffc++
+
+LDFLAGS += \
+	-static

@@ -18,4 +18,4 @@ inline auto write(std::string passwd) {
   return tmp;
 }
 
-}; // namespace secure
+} // namespace secure

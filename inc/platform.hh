@@ -11,5 +11,5 @@
 #define CLEAR() system("cls")
 #define PAUSE() system("pause")
 #include <windows.h>
-#define SLEEP(sec) sleep(sec * 1000)
+#define SLEEP(sec) Sleep(sec * 1000)
 #endif

@@ -48,8 +48,8 @@ static void menu(const std::vector<std::string> str) {
 
   for (size_t i{}; i < str.size(); ++i) {
     std::string tmp(42 - str[i].size(), ' ');
-    printf("%3c%lu. %s%s" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL, ' ',
-           (i + 1) % str.size(), str[i].c_str(), tmp.c_str());
+    printf("%3c%d. %s%s" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL, ' ',
+           static_cast<int>((i + 1) % str.size()), str[i].c_str(), tmp.c_str());
   }
 
   printf("%48c" SGR_GREEN_BACKGROUND
