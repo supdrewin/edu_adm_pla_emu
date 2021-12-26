@@ -118,7 +118,21 @@ public:
     admin_submenu_manage(key);
   }
 
-  void admin_submenu_manage(index_t index) {}
+  void admin_submenu_manage(index_t index) {
+    menu(manage_user, 3);
+
+    int key{};
+    check_cin(key);
+
+    switch (key) {
+    case 1:
+      break;
+    case 2:
+      break;
+    default:
+      break;
+    }
+  }
 
   void user_menu() {
     menu(menu_user, 3);

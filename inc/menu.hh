@@ -8,7 +8,7 @@
 static const std::string menu_main[]{
     "Add a student",     "Find a student",    "Import from database",
     "Show the database", "Sync the database", "Account settings",
-    "Exit and save",
+    "Exit and Save",
 };
 
 static const std::string menu_find[]{
@@ -30,7 +30,9 @@ static const std::string settings[]{
 };
 
 static const std::string manage_user[]{
-    "",
+    "Modify user infomation",
+    "Delete this user",
+    "Cancel and Return",
 };
 
 static auto menu(const std::string *str, size_t num) -> void {
