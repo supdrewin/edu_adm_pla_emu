@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <vector>
 
 #include "console.hh"
 #include "menu.hh"
@@ -78,22 +79,19 @@ public:
 
     auto find_name = [this]() -> index_t {
       std::string name;
-      printf("Name: ");
-      std::cin >> name;
+      printf("Name: "), std::cin >> name;
       return db.find_username(name);
     };
 
     auto find_number = [this]() -> index_t {
       size_t number;
-      printf("Number: ");
-      check_cin(number);
+      printf("Number: "), check_cin(number);
       return db.find_number(number);
     };
 
-    auto find_score = [this]() -> index_t {
+    auto find_score = [this]() -> std::vector<index_t> {
       size_t score;
-      printf("Score: ");
-      check_cin(score);
+      printf("Score: "), check_cin(score);
       return db.find_score(score);
     };
 
@@ -108,9 +106,19 @@ public:
     case 2:
       key = find_number();
       break;
-    case 3:
-      key = find_score();
+    case 3: {
+      auto t = find_score();
+      if (t.size() == 1)
+        key = t[0];
+      else if (t.size() > 1) {
+        key = -2;
+        for (auto _ : t)
+          this->print(_);
+        PAUSE();
+      } else
+        key = -1;
       break;
+    }
     default:
       return;
     }
@@ -121,7 +129,7 @@ public:
       return;
     }
 
-    admin_submenu_manage(key);
+    key >= 0 ? admin_submenu_manage(key) : void();
   }
 
   void admin_submenu_manage(index_t index) {

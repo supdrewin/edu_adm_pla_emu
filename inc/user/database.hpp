@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "database.hh"
 #include "platform.hh"
@@ -54,7 +55,7 @@ public:
   }
 
   index_t find_username(std::string name) {
-    size_t i{};
+    index_t i{};
     for (auto _ : data) {
       if (name == _.u.username)
         return i;
@@ -64,7 +65,7 @@ public:
   }
 
   index_t find_number(size_t num) {
-    size_t i{};
+    index_t i{};
     for (auto _ : data) {
       if (num == _.number)
         return i;
@@ -73,14 +74,15 @@ public:
     return -1;
   }
 
-  index_t find_score(size_t sc) {
-    size_t i{};
+  std::vector<index_t> find_score(size_t sc) {
+    std::vector<index_t> tmp;
+    index_t i{};
     for (auto _ : data) {
       if (_.u.id and sc == _.score)
-        return i;
+        tmp.push_back(i);
       ++i;
     }
-    return -1;
+    return tmp;
   }
 
   void write(const char *filename = "${database}") {
