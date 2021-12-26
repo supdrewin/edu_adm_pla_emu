@@ -6,8 +6,9 @@
 #include "via/console.hpp"
 
 static const std::string menu_main[]{
-    "Add a student", "Find a student", "Import database(E)",
-    "Show database", "Sync database",  "Exit and save",
+    "Add a student",     "Find a student",    "Import from database",
+    "Show the database", "Sync the database", "Account settings",
+    "Exit and save",
 };
 
 static const std::string menu_find[]{

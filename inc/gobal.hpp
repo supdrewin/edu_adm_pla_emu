@@ -14,7 +14,7 @@ public:
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
     std::cout << logo;
-    PAUSE();
+    SLEEP(1);
 
     launch new_launch;
     this->cur_user = new_launch.result();

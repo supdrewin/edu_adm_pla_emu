@@ -41,7 +41,7 @@ public:
   }
 
   void admin_menu() {
-    menu(menu_main, 5);
+    menu(menu_main, 7);
 
     int key{};
     check_cin(key);
@@ -60,6 +60,9 @@ public:
       break;
     case 5:
       this->write();
+      break;
+    case 6:
+      this->user_settings();
       break;
     case 0:
       this->cur = finished;
@@ -111,9 +114,6 @@ public:
     case 1:
       change_passwd();
       break;
-    case 0:
-      this->cur = finished;
-      break;
     default:
       break;
     }
@@ -124,15 +124,18 @@ public:
   void change_passwd() {
     std::string p1, p2;
     do {
-      printf("Please insert your new password: ");
+      printf("Insert your new password: " SGR_BLACK_FOREGROUND);
       std::cin >> p1;
-      printf("Please insert previous again: ");
+      printf(SGR_WHITE_FOREGROUND);
+      printf("Insert previous again: " SGR_BLACK_FOREGROUND);
       std::cin >> p2;
-    } while (
-        p1 != p2
-            ? (printf("Couldn't pick your two input,please try again"), true)
-            : (printf("Password changed!!"), false));
+      printf(SGR_WHITE_FOREGROUND);
+    } while (p1 != p2 ? (printf("Couldn't pick your two input, "
+                                "please try again :(\n"),
+                         true)
+                      : (printf("Password changed!!\n"), false));
     cur_user.passwd = p2;
+    SLEEP(1);
   }
 
   void uindex_gen() {

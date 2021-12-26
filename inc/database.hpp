@@ -6,12 +6,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "platform.hh"
 #include "secure.hh"
 #include "user.hh"
 #include "vaild.hh"
-#include "via/array.hpp"
 
 using index_t = int;
 
@@ -22,7 +22,7 @@ struct user_data {
 };
 
 class database {
-  via::array<user_data> data;
+  std::vector<user_data> data;
 
 public:
   database() : data() { this->read(); }
@@ -30,30 +30,29 @@ public:
   size_t size() { return this->data.size(); }
 
   void add(identity id) {
+    user_data tmp;
     CLEAR();
-    size_t num{}, i{data.size()};
-    std::string name;
 
   insert_username:
     printf("username: ");
-    std::cin >> name;
+    std::cin >> tmp.u.username;
 
-    if (find_username(name) != -1)
+    if (find_username(tmp.u.username) != -1)
       goto insert_username;
 
   insert_number:
     printf("number: ");
-    check_cin(num);
+    check_cin(tmp.number);
 
-    if (find_number(num) != -1)
+    if (find_number(tmp.number) != -1)
       goto insert_number;
 
     printf("score: ");
-    check_cin(data.at(i).score);
+    check_cin(tmp.score);
 
-    data[i].u.username = data[i].u.passwd = name;
-    data[i].u.id = (id == teacher ? 0 : 1000);
-    data[i].number = num;
+    tmp.u.passwd = tmp.u.username;
+    tmp.u.id = (id == teacher ? 0 : 1000);
+    data.push_back(tmp);
   }
 
   bool earse(size_t index) {
@@ -101,14 +100,13 @@ public:
     ofs << "username\tpasswd\tnumber\tid\tscore";
     bool default_admin{false};
 
-    for (size_t i{}; i < data.size(); ++i) {
+    for (auto _ : data) {
       ofs << '\n'
-          << data[i].u.username << '\t' << secure::write(data[i].u.passwd)
-          << '\t' << data[i].number << '\t' << data[i].u.id << '\t'
-          << data[i].score;
+          << _.u.username << '\t' << secure::write(_.u.passwd) << '\t'
+          << _.number << '\t' << _.u.id << '\t' << _.score;
 
       if (not default_admin)
-        default_admin = (data[i].u.username == "root");
+        default_admin = (_.u.username == "root");
     }
 
     if (not default_admin)
@@ -130,10 +128,12 @@ public:
         ? void(0)
         : exit(1);
 
+    user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
-      ifs >> data.at(i).u.username >> data[i].u.passwd >> data[i].number >>
-          data[i].u.id >> data[i].score;
-      secure::read(data[i].u.passwd);
+      ifs >> tmp.u.username >> tmp.u.passwd >> tmp.number >> tmp.u.id >>
+          tmp.score;
+      secure::read(tmp.u.passwd);
+      data.push_back(tmp);
     }
   }
 
