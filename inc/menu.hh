@@ -1,41 +1,43 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "console.hh"
 #include "platform.hh"
 
-static const std::string menu_main[]{
+static const std::vector<std::string> menu_main{
     "Add a student",     "Find a student",    "Import from database",
     "Show the database", "Sync the database", "Account settings",
     "Exit and Save",
 };
 
-static const std::string menu_find[]{
+static const std::vector<std::string> menu_find{
     "Find student name",
     "Find student number",
     "Find student score",
     "Return to main menu",
 };
 
-static const std::string menu_user[]{
+static const std::vector<std::string> menu_user{
     "Show my scores",
     "Account settings",
     "Loging out and Exit",
 };
 
-static const std::string settings[]{
+static const std::vector<std::string> settings{
     "Change my password",
     "Return to main menu",
 };
 
-static const std::string manage_user[]{
+static const std::vector<std::string> manage_user{
+    "Show user infomation",
     "Modify user infomation",
     "Delete this user",
     "Cancel and Return",
 };
 
-static auto menu(const std::string *str, size_t num) -> void {
+static void menu(const std::vector<std::string> str) {
   printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
   CLEAR();
 
@@ -43,10 +45,10 @@ static auto menu(const std::string *str, size_t num) -> void {
                               "%48c" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL,
          ' ', ' ');
 
-  for (size_t i{}; i < num; ++i) {
+  for (size_t i{}; i < str.size(); ++i) {
     std::string tmp(42 - str[i].size(), ' ');
     printf("%3c%lu. %s%s" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL, ' ',
-           (i + 1) % num, str[i].c_str(), tmp.c_str());
+           (i + 1) % str.size(), str[i].c_str(), tmp.c_str());
   }
 
   printf("%48c" SGR_GREEN_BACKGROUND

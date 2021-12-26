@@ -15,7 +15,7 @@ class session {
   enum status {
     running,
     finished,
-  } cur;
+  };
 
   user_database db;
   user cur_user;
@@ -23,15 +23,13 @@ class session {
 public:
   size_t uindex;
 
-  session(user u) : cur(), db(), cur_user(u), uindex() {
+  session(user u) : db(), cur_user(u), uindex() {
     uindex_gen();
 
     if (not cur_user.id)
-      while (cur == running)
-        admin_menu();
+      admin_menu();
     else
-      while (cur == running)
-        user_menu();
+      user_menu();
 
     db[uindex].u = cur_user;
   }
@@ -42,158 +40,194 @@ public:
   }
 
   void admin_menu() {
-    menu(menu_main, 7);
+    status lock{};
 
-    int key{};
-    check_cin(key);
-    CLEAR();
+    while (lock == running) {
+      menu(menu_main);
 
-    switch (key) {
-    case 1:
-      db.add(student);
-      break;
-    case 2:
-      this->admin_submenu_find();
-      break;
-    case 3:
-      break;
-    case 4:
-      this->print();
-      break;
-    case 5:
-      this->write();
-      break;
-    case 6:
-      this->user_settings();
-      break;
-    case 0:
-      this->cur = finished;
-      break;
-    default:
-      break;
+      int key{};
+      check_cin(key);
+      CLEAR();
+
+      switch (key) {
+      case 1:
+        db.add(student);
+        break;
+      case 2:
+        this->admin_submenu_find();
+        break;
+      case 3:
+        break;
+      case 4:
+        this->print();
+        break;
+      case 5:
+        this->write();
+        break;
+      case 6:
+        this->user_settings();
+        break;
+      case 0:
+        lock = finished;
+        continue;
+      default:
+        continue;
+      }
     }
   }
 
   void admin_submenu_find() {
-    menu(menu_find, 4);
+    status lock{};
 
-    auto find_name = [this]() -> index_t {
-      std::string name;
-      printf("Name: "), std::cin >> name;
-      return db.find_username(name);
-    };
+    while (lock == running) {
+      menu(menu_find);
 
-    auto find_number = [this]() -> index_t {
-      size_t number;
-      printf("Number: "), check_cin(number);
-      return db.find_number(number);
-    };
+      auto find_name = [this]() -> index_t {
+        std::string name;
+        printf("Name: "), std::cin >> name;
+        return db.find_username(name);
+      };
 
-    auto find_score = [this]() -> std::vector<index_t> {
-      size_t score;
-      printf("Score: "), check_cin(score);
-      return db.find_score(score);
-    };
+      auto find_number = [this]() -> index_t {
+        size_t number;
+        printf("Number: "), check_cin(number);
+        return db.find_number(number);
+      };
 
-    int key{};
-    check_cin(key);
-    CLEAR();
+      auto find_score = [this]() -> std::vector<index_t> {
+        size_t score;
+        printf("Score: "), check_cin(score);
+        return db.find_score(score);
+      };
 
-    switch (key) {
-    case 1:
-      key = find_name();
-      break;
-    case 2:
-      key = find_number();
-      break;
-    case 3: {
-      auto t = find_score();
-      if (t.size() == 1)
-        key = t[0];
-      else if (t.size() > 1) {
-        key = -2;
-        for (auto _ : t)
-          this->print(_);
-        PAUSE();
-      } else
-        key = -1;
-      break;
+      int key{};
+      check_cin(key);
+      CLEAR();
+
+      switch (key) {
+      case 1:
+        key = find_name();
+        break;
+      case 2:
+        key = find_number();
+        break;
+      case 3: {
+        auto t = find_score();
+        if (t.size() == 1)
+          key = t[0];
+        else if (t.size() > 1) {
+          for (auto _ : t)
+            this->print(_);
+          PAUSE();
+          continue;
+        } else
+          key = -1;
+        break;
+      }
+      case 0:
+        lock = finished;
+        continue;
+      default:
+        continue;
+      }
+
+      if (key == -1) {
+        printf("User not found :(\n"), SLEEP(1);
+        continue;
+      }
+
+      admin_submenu_manage(key);
     }
-    default:
-      return;
-    }
-
-    if (key == -1) {
-      printf("User not found :(\n");
-      SLEEP(1);
-      return;
-    }
-
-    key >= 0 ? admin_submenu_manage(key) : void();
   }
 
   void admin_submenu_manage(index_t index) {
-    menu(manage_user, 3);
+    status lock{};
 
-    auto modify = [index, this]() {
-      printf("Original information of this student:\n");
-      this->print(index);
-      db.earse(index);
-      printf("Insert the new information of this student:\n");
-      db.add(student);
-    };
+    while (lock == running) {
+      menu(manage_user);
 
-    auto earse = [index, this]() { db.earse(index); };
+      auto modify = [index, this]() {
+        printf("Original information of this student:\n");
+        this->print(index);
+        db.earse(index);
+        printf("Insert the new information of this student:\n");
+        db.add(student);
+      };
 
-    int key{};
-    check_cin(key);
-    CLEAR();
+      auto earse = [index, this]() { db.earse(index); };
 
-    switch (key) {
-    case 1:
-      modify();
-      break;
-    case 2:
-      earse();
-      break;
-    default:
-      break;
+      int key{};
+      check_cin(key);
+      CLEAR();
+
+      switch (key) {
+      case 1:
+        print(index);
+        PAUSE();
+        break;
+      case 2:
+        modify();
+        index = db.size() - 1;
+        break;
+      case 3:
+        earse();
+        lock = finished;
+        continue;
+      case 0:
+        lock = finished;
+        continue;
+      default:
+        continue;
+      }
     }
   }
 
   void user_menu() {
-    menu(menu_user, 3);
+    status lock{};
 
-    int key{};
-    check_cin(key);
+    while (lock == running) {
+      menu(menu_user);
 
-    switch (key) {
-    case 1:
-      this->print();
-      break;
-    case 2:
-      user_settings();
-      break;
-    case 0:
-      this->cur = finished;
-      break;
-    default:
-      break;
+      int key{};
+      check_cin(key);
+      CLEAR();
+
+      switch (key) {
+      case 1:
+        this->print();
+        break;
+      case 2:
+        user_settings();
+        break;
+      case 0:
+        lock = finished;
+        continue;
+      default:
+        continue;
+      }
     }
   }
 
   void user_settings() {
-    menu(settings, 2);
+    status lock{};
 
-    int key{};
-    check_cin(key);
+    while (lock == running) {
+      menu(settings);
 
-    switch (key) {
-    case 1:
-      change_passwd();
-      break;
-    default:
-      break;
+      int key{};
+      check_cin(key);
+      CLEAR();
+
+      switch (key) {
+      case 1:
+        change_passwd();
+        break;
+      case 0:
+        lock = finished;
+        continue;
+      default:
+        continue;
+      }
     }
   }
 
