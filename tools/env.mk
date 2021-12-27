@@ -6,7 +6,9 @@ CXXFLAGS += \
 	-Wall \
 	-Wextra \
 	-pedantic \
-	-Weffc++
+	-Weffc++ \
+	-pipe \
+	-O2
 
 LDFLAGS += \
 	-static
