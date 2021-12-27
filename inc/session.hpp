@@ -17,7 +17,7 @@ class session {
     finished,
   } cur;
 
-  user_database db;
+  user_db db;
   base_user cur_user;
 
 public:
@@ -43,23 +43,26 @@ public:
 
       switch (key) {
       case 1:
-        db.add();
+        db.add_user();
         break;
       case 2:
         this->admin_submenu_find();
         break;
       case 3:
+        this->add_item();
         break;
       case 4:
-        this->print();
         break;
       case 5:
-        this->write();
+        this->print();
         break;
       case 6:
-        this->user_settings();
+        this->write();
         break;
       case 7:
+        this->user_settings();
+        break;
+      case 8:
         lock = finished;
         continue;
       case 0:
@@ -145,12 +148,12 @@ public:
       auto modify = [index, this]() {
         printf("Original information of this student:\n");
         db.print_user(index);
-        db.earse(index);
+        db.erase(index);
         printf("Insert the new information of this student:\n");
-        db.add(student);
+        db.add_user(student);
       };
 
-      auto earse = [index, this]() { db.earse(index); };
+      auto earse = [index, this]() { db.erase(index); };
 
       int key{};
       check_cin(key);
@@ -233,6 +236,12 @@ public:
 
   void write() { db.write(); }
 
+  void add_item() {
+    std::string item;
+    printf("The item you want to add: "), std::cin >> item;
+    db.add_item(item), printf("Success!!\n"), SLEEP(1);
+  }
+
   void change_passwd() {
     std::string p1, p2;
     do {
@@ -265,7 +274,7 @@ public:
   void scores_list_header() {
     printf(SGR_BOLD SGR_GREEN_FOREGROUND SGR_UNDERLINE_ON);
 
-    size_t count{db.items.size() * 9 + 10};
+    size_t count{db.its.size() * 11 + 12};
     if (cur_user.id == teacher)
       count += 25;
     while (count--)
@@ -274,9 +283,9 @@ public:
     printf("\n|");
     if (cur_user.id == teacher)
       printf("  student  |   number   |");
-    printf("   all  |");
-    for (auto _ : db.items)
-      printf("%6s  |", _.c_str());
+    printf("    all   |");
+    for (auto _ : db.its)
+      printf("%8s  |", _.c_str());
     printf(SGR_MAGENTA_FOREGROUND "\n");
 
     cur_user.id == student ? printf("|") : 0;

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "database.hh"
+#include "database/items.hpp"
 #include "platform.hh"
 #include "secure.hh"
 #include "user.hh"
@@ -16,12 +17,12 @@
 
 using index_t = int;
 
-struct user_database : public database<user_data> {
-  std::vector<std::string> items;
+struct user_db : public database<user_data> {
+  items its;
 
-  user_database() : items() { this->read(); }
+  user_db() : its() { this->read(); }
 
-  void add(user_identity id = student) {
+  void add_user(user_identity id = student) {
     user_data tmp{id};
 
   insert_username:
@@ -39,15 +40,32 @@ struct user_database : public database<user_data> {
       goto insert_number;
 
     printf("scores:\n");
-    tmp.scores.resize(items.size() + 1);
-    for (size_t i{}; i < items.size();) {
-      printf("%s: ", items[i].c_str());
+    tmp.scores.resize(its.size() + 1);
+    for (size_t i{}; i < its.size();) {
+      printf("%s: ", its[i].c_str());
       check_cin(tmp.scores[++i]);
       tmp.scores[0] += tmp.scores[i];
     }
 
     tmp.u.passwd = tmp.u.username;
     data.push_back(tmp);
+  }
+
+  void add_item(std::string it) {
+    its.add(it);
+    for (auto &_ : data)
+      _.scores.push_back(0);
+  }
+
+  bool del_item(std::string it) {
+    for (size_t i{}; i < its.size(); ++i)
+      if (it == its[i].data()) {
+        its.erase(i);
+        for (auto &_ : data) // TODO: scores_db
+          _.scores.erase(data[i].scores.begin() + i);
+        return true;
+      }
+    return false;
   }
 
   index_t find_username(std::string name) {
@@ -82,6 +100,7 @@ struct user_database : public database<user_data> {
   }
 
   void write(const char *filename = "${database}") {
+    its.write();
     std::ofstream ofs(filename);
 
     ofs << "username\tpasswd\tnumber\tid\tscores";
@@ -101,13 +120,13 @@ struct user_database : public database<user_data> {
 
     if (not default_admin) {
       ofs << "\nroot\t" << secure::write("root") << "\t0\t0";
-      for (size_t i{}; i < items.size(); ++i)
+      for (size_t i{}; i < its.size(); ++i)
         ofs << "\t0";
     }
   }
 
   void read(const char *filename = "${database}") {
-    read_config(), this->clear();
+    its.read(), this->clear();
 
     std::ifstream ifs(filename);
     if (not ifs.good())
@@ -125,23 +144,23 @@ struct user_database : public database<user_data> {
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
       ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id;
-      tmp.scores.resize(items.size() + 1);
-      for (size_t j{}; j < items.size() + 1; ++j)
+      tmp.scores.resize(its.size() + 1);
+      for (size_t j{}; j < its.size() + 1; ++j)
         ifs >> tmp.scores[j];
       secure::read(tmp.u.passwd);
       data.push_back(tmp);
     }
   }
 
-  void read_config(const char *filename = "${config}") {
-    items.clear();
-    std::ifstream ifs(filename);
-    while (not ifs.eof()) {
-      std::string tmp;
-      ifs >> tmp;
-      items.push_back(tmp);
-    }
-  }
+  // void read_config(const char *filename = "${config}") {
+  //   its.clear();
+  //   std::ifstream ifs(filename);
+  //   while (not ifs.eof()) {
+  //     std::string tmp;
+  //     ifs >> tmp;
+  //     its.push_back(tmp);
+  //   }
+  // }
 
   void print_user(size_t i) {
     printf("|%9s  |%11d |", data[i].u.username.c_str(),
@@ -150,8 +169,8 @@ struct user_database : public database<user_data> {
   }
 
   void print_scores(size_t i) {
-    for (size_t j{}; j < items.size() + 1; ++j)
-      printf("%6d  |", static_cast<int>(data[i].scores[j]));
+    for (size_t j{}; j < its.size() + 1; ++j)
+      printf("%8d  |", static_cast<int>(data[i].scores[j]));
     printf("\n");
   }
 

@@ -7,9 +7,16 @@
 #include "platform.hh"
 
 static const std::vector<std::string> menu_main{
-    "Add a student",     "Find a student",    "Import from database",
-    "Show the database", "Sync the database", "Account settings",
-    "Logout this user",  "Exit program",
+    "Add a student",
+    "Find a student",
+    "Add an exam subject",
+    "Delete an exam subject",
+    /* "Import from database",*/
+    "Show the database",
+    "Sync the database",
+    "Account settings",
+    "Logout this user",
+    "Exit program",
 };
 
 static const std::vector<std::string> menu_find{

@@ -14,7 +14,7 @@ public:
 
   void add(_Tp tmp) { data.push_back(tmp); }
 
-  bool earse(size_t index) {
+  bool erase(size_t index) {
     if (index >= data.size())
       return false;
     data.erase(data.begin() + index);

@@ -20,7 +20,7 @@ class launch {
     success,
   } status;
 
-  user_database db;
+  user_db db;
   user_type unknown;
 
 public:
