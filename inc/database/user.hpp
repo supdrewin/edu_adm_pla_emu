@@ -143,7 +143,7 @@ struct user_database : public database<user_data> {
     }
   }
 
-  void print(size_t i) {
+  void print_user(size_t i) {
     printf("|%9s  |%11d |", data[i].u.username.c_str(),
            static_cast<int>(data[i].num));
     this->print_scores(i);

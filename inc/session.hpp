@@ -113,7 +113,7 @@ public:
           key = t[0];
         else if (t.size() > 1) {
           for (auto _ : t)
-            db.print(_);
+            db.print_user(_);
           PAUSE();
           continue;
         } else
@@ -144,7 +144,7 @@ public:
 
       auto modify = [index, this]() {
         printf("Original information of this student:\n");
-        db.print(index);
+        db.print_user(index);
         db.earse(index);
         printf("Insert the new information of this student:\n");
         db.add(student);
@@ -158,7 +158,7 @@ public:
 
       switch (key) {
       case 1:
-        db.print(index);
+        db.print_user(index);
         PAUSE();
         break;
       case 2:
@@ -289,7 +289,7 @@ public:
     if (not cur_user.id) {
       for (size_t i{}; i < db.size(); ++i)
         if (db[i].u.id)
-          db.print(i);
+          db.print_user(i);
       PAUSE();
       return;
     }
