@@ -262,9 +262,29 @@ public:
       }
   }
 
+  void scores_list_header() {
+    printf(SGR_BOLD SGR_GREEN_FOREGROUND SGR_UNDERLINE_ON);
+
+    size_t count{db.items.size() * 9 + 10};
+    if (cur_user.id == teacher)
+      count += 25;
+    while (count--)
+      printf(" ");
+
+    printf("\n|");
+    if (cur_user.id == teacher)
+      printf("  student  |   number   |");
+    printf("   all  |");
+    for (auto _ : db.items)
+      printf("%6s  |", _.c_str());
+    printf(SGR_MAGENTA_FOREGROUND "\n");
+
+    cur_user.id == student ? printf("|") : 0;
+  }
+
   void print() {
-    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
-    CLEAR();
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n"), CLEAR();
+    scores_list_header();
 
     if (not cur_user.id) {
       for (size_t i{}; i < db.size(); ++i)
@@ -273,7 +293,7 @@ public:
       PAUSE();
       return;
     }
-    db.print(uindex);
-    PAUSE();
+
+    db.print_scores(uindex), PAUSE();
   }
 };

@@ -16,10 +16,9 @@
 
 using index_t = int;
 
-class user_database : public database<user_data> {
+struct user_database : public database<user_data> {
   std::vector<std::string> items;
 
-public:
   user_database() : items() { this->read(); }
 
   void add(user_identity id = student) {
@@ -145,17 +144,15 @@ public:
   }
 
   void print(size_t i) {
-    printf("student: %s\tnumber: %d\t", data[i].u.username.c_str(),
+    printf("|%9s  |%11d |", data[i].u.username.c_str(),
            static_cast<int>(data[i].num));
     this->print_scores(i);
-    printf("\n");
   }
 
   void print_scores(size_t i) {
-    printf("scores: all: %d", static_cast<int>(data[i].scores[0]));
-    for (size_t j{}; j < items.size(); ++j)
-      printf(" %s: %d", items[j].c_str(),
-             static_cast<int>(data[i].scores[j + 1]));
+    for (size_t j{}; j < items.size() + 1; ++j)
+      printf("%6d  |", static_cast<int>(data[i].scores[j]));
+    printf("\n");
   }
 
   void clear() { data.clear(); }
