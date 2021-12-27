@@ -52,6 +52,7 @@ public:
         this->add_item();
         break;
       case 4:
+        this->del_item();
         break;
       case 5:
         this->print();
@@ -240,6 +241,13 @@ public:
     std::string item;
     printf("The item you want to add: "), std::cin >> item;
     db.add_item(item), printf("Success!!\n"), SLEEP(1);
+  }
+
+  void del_item() {
+    std::string item;
+    printf("The item you want to delete: "), std::cin >> item;
+    db.del_item(item) ? printf("Success!!\n") : printf("Failed!!\n");
+    SLEEP(1);
   }
 
   void change_passwd() {

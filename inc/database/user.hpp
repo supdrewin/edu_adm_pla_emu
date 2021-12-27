@@ -60,9 +60,11 @@ struct user_db : public database<user_data> {
   bool del_item(std::string it) {
     for (size_t i{}; i < its.size(); ++i)
       if (it == its[i].data()) {
-        its.erase(i);
-        for (auto &_ : data) // TODO: scores_db
-          _.scores.erase(data[i].scores.begin() + i);
+        its.erase(i); // TODO: scores_db
+        for (auto &_ : data) {
+          _.scores[0] -= _.scores[i + 1];
+          _.scores.erase(_.scores.begin() + i + 1);
+        }
         return true;
       }
     return false;
@@ -151,16 +153,6 @@ struct user_db : public database<user_data> {
       data.push_back(tmp);
     }
   }
-
-  // void read_config(const char *filename = "${config}") {
-  //   its.clear();
-  //   std::ifstream ifs(filename);
-  //   while (not ifs.eof()) {
-  //     std::string tmp;
-  //     ifs >> tmp;
-  //     its.push_back(tmp);
-  //   }
-  // }
 
   void print_user(size_t i) {
     printf("|%9s  |%11d |", data[i].u.username.c_str(),
