@@ -40,10 +40,11 @@ public:
       goto insert_number;
 
     printf("scores:\n");
-    tmp.scores.resize(items.size());
-    for (size_t i{}; i < items.size(); ++i) {
+    tmp.scores.resize(items.size() + 1);
+    for (size_t i{}; i < items.size();) {
       printf("%s: ", items[i].c_str());
-      check_cin(tmp.scores[i]);
+      check_cin(tmp.scores[++i]);
+      tmp.scores[0] += tmp.scores[i];
     }
 
     tmp.u.passwd = tmp.u.username;
@@ -125,8 +126,8 @@ public:
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
       ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id;
-      tmp.scores.resize(items.size());
-      for (size_t j{}; j < items.size(); ++j)
+      tmp.scores.resize(items.size() + 1);
+      for (size_t j{}; j < items.size() + 1; ++j)
         ifs >> tmp.scores[j];
       secure::read(tmp.u.passwd);
       data.push_back(tmp);
@@ -151,9 +152,10 @@ public:
   }
 
   void print_scores(size_t i) {
-    printf("scores:");
+    printf("scores: all: %d", static_cast<int>(data[i].scores[0]));
     for (size_t j{}; j < items.size(); ++j)
-      printf(" %s: %d", items[j].c_str(), static_cast<int>(data[i].scores[j]));
+      printf(" %s: %d", items[j].c_str(),
+             static_cast<int>(data[i].scores[j + 1]));
   }
 
   void clear() { data.clear(); }
