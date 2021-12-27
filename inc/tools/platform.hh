@@ -12,4 +12,4 @@
 #define PAUSE() system("pause")
 #include <windows.h>
 #define SLEEP(sec) Sleep(sec * 1000)
-#endif
+#endif // defined(__unix__)

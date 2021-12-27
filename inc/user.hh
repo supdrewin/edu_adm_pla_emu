@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "db/scores.hpp"
+
 enum user_identity {
   teacher = 0,
   student = 1000,
@@ -22,13 +24,8 @@ struct base_user {
 struct user_data {
   base_user u;
   size_t num;
-  std::vector<size_t> scores;
-  user_data(user_identity i = student) : u(i), num(), scores() {}
-};
-
-struct student_data {
-  base_user u;
-  size_t num;
-  std::vector<size_t> scores;
-  student_data(user_identity i = student) : u(i), num(), scores() {}
+  scores sc;
+  // std::vector<size_t> scores;
+  user_data(user_identity i = student) //
+      : u(i), num(), sc() {}
 };

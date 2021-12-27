@@ -1,9 +1,11 @@
 #pragma once
 
 #include "launch.hpp"
-#include "logo.hh"
 #include "session.hpp"
 #include "user.hh"
+
+#define __has_logo
+#include "logo.hh"
 
 struct global {
   global() {

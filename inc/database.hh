@@ -10,7 +10,7 @@ protected:
 public:
   database() : data() {}
 
-  size_t size() { return this->data.size(); }
+  size_t size() { return data.size(); }
 
   void add(_Tp tmp) { data.push_back(tmp); }
 
@@ -20,6 +20,9 @@ public:
     data.erase(data.begin() + index);
     return true;
   }
+
+  void resize(size_t s) { data.resize(s); }
+  void clear() { data.clear(); }
 
   _Tp &operator[](size_t i) { return data.operator[](i); }
 

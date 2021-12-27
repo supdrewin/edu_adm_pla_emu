@@ -9,13 +9,14 @@
 #include <vector>
 
 #include "database.hh"
-#include "db/items.hpp"
-#include "tools/platform.hh"
-#include "tools/secure.hh"
-#include "tools/vaild.hh"
 #include "user.hh"
 
-using index_t = int;
+#include "db/items.hpp"
+
+#include "tools/platform.hh"
+#include "tools/secure.hh"
+#include "tools/types.hh"
+#include "tools/vaild.hh"
 
 struct user_db : public database<user_data> {
   items its;
@@ -40,11 +41,11 @@ struct user_db : public database<user_data> {
       goto insert_number;
 
     printf("scores:\n");
-    tmp.scores.resize(its.size() + 1);
+    tmp.sc.resize(its.size() + 1);
     for (size_t i{}; i < its.size();) {
       printf("%s: ", its[i].c_str());
-      check_cin(tmp.scores[++i]);
-      tmp.scores[0] += tmp.scores[i];
+      check_cin(tmp.sc[++i]);
+      tmp.sc[0] += tmp.sc[i];
     }
 
     tmp.u.passwd = tmp.u.username;
@@ -54,16 +55,16 @@ struct user_db : public database<user_data> {
   void add_item(std::string it) {
     its.add(it);
     for (auto &_ : data)
-      _.scores.push_back(0);
+      _.sc.add(0);
   }
 
   bool del_item(std::string it) {
     for (size_t i{}; i < its.size(); ++i)
       if (it == its[i].data()) {
-        its.erase(i); // TODO: scores_db
+        its.erase(i);
         for (auto &_ : data) {
-          _.scores[0] -= _.scores[i + 1];
-          _.scores.erase(_.scores.begin() + i + 1);
+          _.sc[0] -= _.sc[i + 1];
+          _.sc.erase(i + 1);
         }
         return true;
       }
@@ -94,7 +95,7 @@ struct user_db : public database<user_data> {
     std::vector<index_t> tmp;
     index_t i{};
     for (auto _ : data) {
-      if (_.u.id and sc == _.scores[0])
+      if (_.u.id and sc == _.sc[0])
         tmp.push_back(i);
       ++i;
     }
@@ -113,7 +114,7 @@ struct user_db : public database<user_data> {
           << _.u.username << '\t' << secure::write(_.u.passwd) << '\t' << _.num
           << '\t' << _.u.id;
 
-      for (auto __ : _.scores)
+      for (auto __ : _.sc)
         ofs << '\t' << __;
 
       if (not default_admin)
@@ -146,9 +147,9 @@ struct user_db : public database<user_data> {
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
       ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id;
-      tmp.scores.resize(its.size() + 1);
+      tmp.sc.resize(its.size() + 1);
       for (size_t j{}; j < its.size() + 1; ++j)
-        ifs >> tmp.scores[j];
+        ifs >> tmp.sc[j];
       secure::read(tmp.u.passwd);
       data.push_back(tmp);
     }
@@ -162,9 +163,7 @@ struct user_db : public database<user_data> {
 
   void print_scores(size_t i) {
     for (size_t j{}; j < its.size() + 1; ++j)
-      printf("%8d  |", static_cast<int>(data[i].scores[j]));
+      printf("%8d  |", static_cast<int>(data[i].sc[j]));
     printf("\n");
   }
-
-  void clear() { data.clear(); }
 };

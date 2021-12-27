@@ -5,11 +5,13 @@
 #include <vector>
 
 #include "db/users.hpp"
-#include "menu.hh"
 #include "tools/console.hh"
 #include "tools/platform.hh"
 #include "tools/vaild.hh"
 #include "user.hh"
+
+#define __has_menu
+#include "menu.hh"
 
 class session {
   enum status {

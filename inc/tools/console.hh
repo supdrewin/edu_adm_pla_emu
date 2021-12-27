@@ -6,7 +6,6 @@
 #define LF '\x0a'
 #define VT '\x0b'
 #define FF '\x0c'
-// #define CR '\x0d'
 #define SO '\x0e'
 #define SI '\x0f'
 #define CAN '\x18'

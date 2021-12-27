@@ -5,14 +5,14 @@
 #include <iostream>
 #include <string>
 
-#include "db/users.hpp"
-#include "tools/console.hh"
-#include "tools/platform.hh"
 #include "user.hh"
 
-class launch {
-  using user_type = base_user;
+#include "db/users.hpp"
 
+#include "tools/console.hh"
+#include "tools/platform.hh"
+
+class launch {
   enum status {
     init_status,
     unknown_username,
@@ -21,7 +21,7 @@ class launch {
   } status;
 
   user_db db;
-  user_type unknown;
+  base_user unknown;
 
 public:
   launch() : status(), db(), unknown() {}
@@ -44,7 +44,7 @@ public:
     SLEEP(1), CLEAR();
   }
 
-  user_type result() { return unknown; }
+  base_user result() { return unknown; }
 
   void ask() {
     printf("Username: ");

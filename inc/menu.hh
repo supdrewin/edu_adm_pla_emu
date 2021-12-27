@@ -1,5 +1,7 @@
 #pragma once
 
+#if defined(__has_menu)
+
 #include <string>
 #include <vector>
 
@@ -63,3 +65,5 @@ static void menu(const std::vector<std::string> str) {
          " \n%50c\n" SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND,
          ' ', ' ');
 }
+
+#endif // defined (__has_menu)

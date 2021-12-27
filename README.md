@@ -1,3 +1,1 @@
 # Educational Administration Platform Emulator
-
-
