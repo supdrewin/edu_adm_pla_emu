@@ -19,9 +19,16 @@ struct base_user {
   bool operator!=(base_user r) { return this->username != r.username; }
 };
 
+// struct user_data {
+//   base_user u;
+//   size_t num, score;
+//   user_data(user_identity i = student) : u(i), num(), score() {}
+// };
+
 struct user_data {
   base_user u;
-  size_t num, score;
+  size_t num;
+  std::vector<size_t> score;
   user_data(user_identity i = student) : u(i), num(), score() {}
 };
 
@@ -29,4 +36,5 @@ struct student_data {
   base_user u;
   size_t num;
   std::vector<size_t> scores;
+  student_data(user_identity i = student) : u(i), num(), scores() {}
 };

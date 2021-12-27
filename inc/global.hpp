@@ -4,7 +4,6 @@
 #include "logo.hh"
 #include "session.hpp"
 #include "user.hh"
-#include "user/database.hpp"
 
 struct global {
   global() {

@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "console.hh"
+#include "database/user.hpp"
 #include "menu.hh"
 #include "platform.hh"
 #include "user.hh"
-#include "user/database.hpp"
 #include "vaild.hh"
 
 class session {
@@ -113,7 +113,7 @@ public:
           key = t[0];
         else if (t.size() > 1) {
           for (auto _ : t)
-            this->print(_);
+            db.print(_);
           PAUSE();
           continue;
         } else
@@ -144,7 +144,7 @@ public:
 
       auto modify = [index, this]() {
         printf("Original information of this student:\n");
-        this->print(index);
+        db.print(index);
         db.earse(index);
         printf("Insert the new information of this student:\n");
         db.add(student);
@@ -158,7 +158,7 @@ public:
 
       switch (key) {
       case 1:
-        print(index);
+        db.print(index);
         PAUSE();
         break;
       case 2:
@@ -258,11 +258,6 @@ public:
       }
   }
 
-  void print(size_t i) {
-    std::cout << "student: " << db[i].u.username << "\tnumber: " << db[i].num
-              << "\tscore: " << db[i].score << '\n';
-  }
-
   void print() {
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
@@ -270,11 +265,11 @@ public:
     if (not cur_user.id) {
       for (size_t i{}; i < db.size(); ++i)
         if (db[i].u.id)
-          this->print(i);
+          db.print(i);
       PAUSE();
       return;
     }
-    this->print(uindex);
+    db.print(uindex);
     PAUSE();
   }
 };

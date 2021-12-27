@@ -6,9 +6,9 @@
 #include <string>
 
 #include "console.hh"
+#include "database/user.hpp"
 #include "platform.hh"
 #include "user.hh"
-#include "user/database.hpp"
 
 class launch {
   using user_type = base_user;
