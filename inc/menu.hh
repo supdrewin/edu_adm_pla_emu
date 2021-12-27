@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "console.hh"
-#include "platform.hh"
+#include "tools/console.hh"
+#include "tools/platform.hh"
 
 static const std::vector<std::string> menu_main{
     "Add a student",

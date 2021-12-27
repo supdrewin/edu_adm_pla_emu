@@ -4,12 +4,12 @@
 #include <cstdio>
 #include <vector>
 
-#include "console.hh"
-#include "database/user.hpp"
+#include "db/users.hpp"
 #include "menu.hh"
-#include "platform.hh"
+#include "tools/console.hh"
+#include "tools/platform.hh"
+#include "tools/vaild.hh"
 #include "user.hh"
-#include "vaild.hh"
 
 class session {
   enum status {

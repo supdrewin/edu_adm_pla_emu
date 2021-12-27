@@ -9,11 +9,11 @@
 #include <vector>
 
 #include "database.hh"
-#include "database/items.hpp"
-#include "platform.hh"
-#include "secure.hh"
+#include "db/items.hpp"
+#include "tools/platform.hh"
+#include "tools/secure.hh"
+#include "tools/vaild.hh"
 #include "user.hh"
-#include "vaild.hh"
 
 using index_t = int;
 

@@ -5,9 +5,9 @@
 #include <iostream>
 #include <string>
 
-#include "console.hh"
-#include "database/user.hpp"
-#include "platform.hh"
+#include "db/users.hpp"
+#include "tools/console.hh"
+#include "tools/platform.hh"
 #include "user.hh"
 
 class launch {
