@@ -107,7 +107,7 @@ struct user_database : public database<user_data> {
   }
 
   void read(const char *filename = "${database}") {
-    read_config();
+    read_config(), this->clear();
 
     std::ifstream ifs(filename);
     if (not ifs.good())

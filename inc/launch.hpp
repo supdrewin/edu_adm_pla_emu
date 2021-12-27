@@ -27,7 +27,7 @@ public:
   launch() : status(), db(), unknown() {}
 
   void new_launch() {
-    db.clear(), db.read(), status = init_status;
+    db.read(), status = init_status;
 
     printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
     CLEAR();
