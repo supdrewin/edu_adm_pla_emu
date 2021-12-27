@@ -40,10 +40,10 @@ public:
       goto insert_number;
 
     printf("scores:\n");
-    tmp.score.resize(items.size());
+    tmp.scores.resize(items.size());
     for (size_t i{}; i < items.size(); ++i) {
       printf("%s: ", items[i].c_str());
-      check_cin(tmp.score[i]);
+      check_cin(tmp.scores[i]);
     }
 
     tmp.u.passwd = tmp.u.username;
@@ -74,7 +74,7 @@ public:
     std::vector<index_t> tmp;
     index_t i{};
     for (auto _ : data) {
-      if (_.u.id and sc == _.score[0])
+      if (_.u.id and sc == _.scores[0])
         tmp.push_back(i);
       ++i;
     }
@@ -92,7 +92,7 @@ public:
           << _.u.username << '\t' << secure::write(_.u.passwd) << '\t' << _.num
           << '\t' << _.u.id;
 
-      for (auto __ : _.score)
+      for (auto __ : _.scores)
         ofs << '\t' << __;
 
       if (not default_admin)
@@ -125,9 +125,9 @@ public:
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
       ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id;
-      tmp.score.resize(items.size());
+      tmp.scores.resize(items.size());
       for (size_t j{}; j < items.size(); ++j)
-        ifs >> tmp.score[j];
+        ifs >> tmp.scores[j];
       secure::read(tmp.u.passwd);
       data.push_back(tmp);
     }
@@ -153,7 +153,7 @@ public:
   void print_scores(size_t i) {
     printf("scores:");
     for (size_t j{}; j < items.size(); ++j)
-      printf(" %s: %d", items[j].c_str(), static_cast<int>(data[i].score[j]));
+      printf(" %s: %d", items[j].c_str(), static_cast<int>(data[i].scores[j]));
   }
 
   void clear() { data.clear(); }

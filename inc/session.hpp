@@ -242,10 +242,14 @@ public:
       printf("Insert previous again: " SGR_BLACK_FOREGROUND);
       std::cin >> p2;
       printf(SGR_WHITE_FOREGROUND);
-    } while (p1 != p2 ? (printf("Couldn't pick your two input, "
-                                "please try again :(\n"),
-                         true)
-                      : (printf("Password changed!!\n"), false));
+    } while (p1 == p2
+                 ? (p2.size() < 6 ? (printf("Password's length must >= 6, "
+                                            "please try another :(\n"),
+                                     true)
+                                  : (printf("Password changed!!\n"), false))
+                 : (printf("Couldn't pick your two input, "
+                           "please try again :(\n"),
+                    true));
     db[uindex].u.passwd = cur_user.passwd = p2;
     SLEEP(1);
   }
