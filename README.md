@@ -66,7 +66,7 @@ than change the `CXX`.
 ~ > export CXX=/path/to/your/c++
 ```
 
-### Contribute
+### Contributing
 
 This project has not completed and may need your help.
 If you meet BUGs or have a good idea for improve this program,
