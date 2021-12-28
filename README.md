@@ -1,6 +1,6 @@
 # Educational Administration Platform Emulator
 
-This is an simple emulator arm to implement
+This is an simple emulator aim to implement
 **Educational Administration Platform**
 base on terminal user interface
 _(TUI, but without GUI)_.
