@@ -47,9 +47,11 @@ public:
   base_user result() { return unknown; }
 
   void ask() {
-    printf("Username: ");
+    printf(SGR_BROWN_FOREGROUND SGR_BOLD
+           "Username: " SGR_RESET_ALL SGR_BLACK_BACKGROUND);
     std::cin >> unknown.username;
-    printf("Passwd: " SGR_BLACK_FOREGROUND);
+    printf(SGR_BROWN_FOREGROUND SGR_BOLD
+           "Passwd: " SGR_RESET_ALL SGR_BLACK_BACKGROUND SGR_BLACK_FOREGROUND);
     std::cin >> unknown.passwd;
     printf(SGR_WHITE_FOREGROUND);
   }

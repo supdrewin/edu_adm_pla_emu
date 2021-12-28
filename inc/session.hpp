@@ -11,7 +11,9 @@
 #include "user.hh"
 
 #define __has_menu
-#include "menu.hh"
+#include "tui/menu.hh"
+
+LANG(en_US)
 
 class session {
   enum status {
@@ -150,8 +152,10 @@ public:
 
       auto modify = [index, this]() {
         printf("Original information of this student:\n");
+        scores_list_header();
         db.print_user(index);
         db.erase(index);
+        printf(SGR_WHITE_FOREGROUND SGR_UNDERLINE_OFF "\n");
         printf("Insert the new information of this student:\n");
         db.add_user(student);
       };
@@ -164,6 +168,7 @@ public:
 
       switch (key) {
       case 1:
+        scores_list_header();
         db.print_user(index);
         PAUSE();
         break;

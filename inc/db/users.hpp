@@ -28,6 +28,7 @@ struct user_db : public database<user_data> {
 
   void add_user(user_identity id = student) {
     user_data tmp{id};
+    printf(SGR_BOLD);
 
   insert_username:
     printf("username: ");
