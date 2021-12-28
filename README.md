@@ -20,6 +20,7 @@ noted that password must be more than 6 charactor.
 
 ### Features
 
+- A cool character LOGO
 - Different types of users
 	- Adminstrators (teachers)
 		- Add and delete students
