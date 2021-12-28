@@ -1,7 +1,7 @@
 OBJS := \
 	main.o
 
-main.elf: $(OBJS)
+main.run: $(OBJS)
 	$(LINK.cc) -o $@ $^
 
 clean:

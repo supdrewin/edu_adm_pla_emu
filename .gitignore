@@ -1,5 +1,5 @@
 ${config}
 ${database}
 
-*.elf
 *.o
+*.run
