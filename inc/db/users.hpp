@@ -54,8 +54,12 @@ struct user_db : public database<user_data> {
 
   void add_item(std::string it) {
     its.add(it);
-    for (auto &_ : data)
-      _.sc.add(0);
+    size_t score;
+    for (auto &_ : data) {
+      _.u.id ? (printf("%s: ", _.u.username.c_str()), check_cin(score),
+                _.sc[0] += score, _.sc.add(score))
+             : _.sc.add(0);
+    }
   }
 
   bool del_item(std::string it) {
