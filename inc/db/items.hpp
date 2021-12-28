@@ -6,7 +6,11 @@
 #include "database.hh"
 
 struct items : public database<std::string> {
-  void write(const char *filename = "${config}") {
+  std::string filename;
+
+  items(const char *n = "${config}") : filename(n) {}
+
+  void write() {
     std::ofstream ofs(filename);
     ofs << "subjects";
 
@@ -14,7 +18,7 @@ struct items : public database<std::string> {
       ofs << '\n' << _;
   }
 
-  void read(const char *filename = "${config}") {
+  void read() {
     data.clear();
     std::ifstream ifs(filename);
 

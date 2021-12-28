@@ -19,9 +19,12 @@
 #include "tools/vaild.hh"
 
 struct user_db : public database<user_data> {
+  std::string filename;
   items its;
 
-  user_db() : its() { this->read(); }
+  user_db(const char *name = "${database}") : filename(name), its() {
+    this->read();
+  }
 
   void add_user(user_identity id = student) {
     user_data tmp{id};
@@ -106,7 +109,7 @@ struct user_db : public database<user_data> {
     return tmp;
   }
 
-  void write(const char *filename = "${database}") {
+  void write() {
     its.write();
     std::ofstream ofs(filename);
 
@@ -132,7 +135,7 @@ struct user_db : public database<user_data> {
     }
   }
 
-  void read(const char *filename = "${database}") {
+  void read() {
     its.read(), this->clear();
 
     std::ifstream ifs(filename);
