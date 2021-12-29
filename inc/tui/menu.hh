@@ -1,7 +1,7 @@
 #pragma once
 
-#if defined(__has_menu)
-
+#include <cstddef>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -10,25 +10,34 @@
 
 #include "en_US.hh"
 
-#define LANG(lang) using namespace lang;
+#define Language(LANG) using namespace LANG
 
-static void menu(const std::vector<std::string> str) {
-  printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n");
-  CLEAR();
+struct menu {
+  menu(std::vector<std::string> its, size_t width = 50)
+      : items(its), width(width) {}
 
-  printf(SGR_GREEN_BACKGROUND "%50c\n " SGR_RESET_ALL
-                              "%48c" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL,
-         ' ', ' ');
+  void setw(size_t width) { this->width = width; }
 
-  for (size_t i{}; i < str.size(); ++i) {
-    std::string tmp(42 - str[i].size(), ' ');
-    printf("%3c%d. %s%s" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL, ' ',
-           static_cast<int>((i + 1) % str.size()), str[i].c_str(), tmp.c_str());
+  void show() {
+    std::string outside(width, ' '), inside(width - 2, ' ');
+
+    printf(SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND "\n"), CLEAR();
+    std::cout << SGR_GREEN_BACKGROUND << outside << "\n " << SGR_RESET_ALL
+              << inside << SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL;
+
+    for (size_t i{}; i < items.size(); ++i) {
+      std::string fixed((inside.size() - 6) - items[i].size(), ' ');
+      printf("%3c%d. %s%s" SGR_GREEN_BACKGROUND " \n " SGR_RESET_ALL, ' ',
+             static_cast<int>((i + 1) % items.size()), items[i].c_str(),
+             fixed.c_str());
+    }
+
+    std::cout << inside << SGR_GREEN_BACKGROUND << " \n"
+              << outside << '\n'
+              << SGR_BLACK_BACKGROUND << SGR_WHITE_FOREGROUND;
   }
 
-  printf("%48c" SGR_GREEN_BACKGROUND
-         " \n%50c\n" SGR_BLACK_BACKGROUND SGR_WHITE_FOREGROUND,
-         ' ', ' ');
-}
-
-#endif // defined (__has_menu)
+private:
+  std::vector<std::string> items;
+  size_t width;
+};

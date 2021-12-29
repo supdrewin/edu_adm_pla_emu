@@ -10,10 +10,8 @@
 #include "tools/vaild.hh"
 #include "user.hh"
 
-#define __has_menu
 #include "tui/menu.hh"
-
-LANG(en_US)
+Language(en_US);
 
 class session {
   enum status {
@@ -37,9 +35,10 @@ public:
 
   void admin_menu() {
     status lock{};
+    menu m(menu_main);
 
     while (lock == running) {
-      menu(menu_main);
+      m.show();
 
       int key{};
       check_cin(key);
@@ -82,9 +81,10 @@ public:
 
   void admin_submenu_find() {
     status lock{};
+    menu m(menu_find);
 
     while (lock == running) {
-      menu(menu_find);
+      m.show();
 
       auto find_name = [this]() -> index_t {
         std::string name;
@@ -146,9 +146,10 @@ public:
 
   void admin_submenu_manage(index_t index) {
     status lock{};
+    menu m(manage_user);
 
     while (lock == running) {
-      menu(manage_user);
+      m.show();
 
       auto modify = [index, this]() {
         printf("Original information of this student:\n");
@@ -191,9 +192,10 @@ public:
 
   void user_menu() {
     status lock{};
+    menu m(menu_user);
 
     while (lock == running) {
-      menu(menu_user);
+      m.show();
 
       int key{};
       check_cin(key);
@@ -221,9 +223,10 @@ public:
 
   void user_settings() {
     status lock{};
+    menu m(settings);
 
     while (lock == running) {
-      menu(settings);
+      m.show();
 
       int key{};
       check_cin(key);
