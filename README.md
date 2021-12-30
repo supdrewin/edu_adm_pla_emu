@@ -26,6 +26,7 @@ noted that password must be more than 6 charactor.
 		- Add and delete students
 		- Add and delete exam subjects
 		- Find student and operation
+		- Sort the sequence of database
 		- Show all contents of database
 	- Normal Users (Students)
 		- Show their own's scores
