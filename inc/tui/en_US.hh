@@ -5,6 +5,8 @@
 
 namespace en_US {
 
+static std::string locale("en_US");
+
 static const std::vector<std::string> menu_main{
     "Add a student",          "Find a student",    "Add an exam subject",
     "Delete an exam subject", "Sort the database", "Show the database",

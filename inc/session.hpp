@@ -11,7 +11,6 @@
 #include "user.hh"
 
 #include "tui/menu.hh"
-Language(en_US);
 
 class session {
   enum status {
