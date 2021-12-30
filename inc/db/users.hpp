@@ -22,7 +22,7 @@ struct user_db : public database<user_data> {
   std::string filename;
   items its;
 
-  user_db(const char *name = "${database}") : filename(name), its() {
+  user_db(const char *name) : filename(name), its("subject.db") {
     this->read();
   }
 

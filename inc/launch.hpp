@@ -24,7 +24,7 @@ class launch {
   base_user unknown;
 
 public:
-  launch() : status(), db(), unknown() {}
+  launch() : status(), db("account.db"), unknown() {}
 
   void new_launch() {
     db.read(), status = init_status;

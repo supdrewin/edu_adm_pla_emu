@@ -33,7 +33,7 @@ public:
       }
   }
 
-  session(base_user u) : cur(), db(), cur_user(u), uindex() {
+  session(base_user u) : cur(), db("account.db"), cur_user(u), uindex() {
     uindex_gen(), (cur_user.id ? user_menu() : admin_menu());
   }
 
@@ -43,6 +43,7 @@ public:
 
   // admin_menu.cpp
   void admin_menu();
+  void admin_submenu_sort();
   void admin_submenu_find();
   void admin_submenu_manage(index_t index);
 

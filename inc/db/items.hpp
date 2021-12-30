@@ -8,7 +8,7 @@
 struct items : public database<std::string> {
   std::string filename;
 
-  items(const char *n = "${config}") : filename(n) {}
+  items(const char *n) : filename(n) {}
 
   void write() {
     std::ofstream ofs(filename);

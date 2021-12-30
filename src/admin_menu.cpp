@@ -1,4 +1,9 @@
+#include <algorithm>
+#include <string>
+
 #include "session.hpp"
+#include "tui/en_US.hh"
+#include "user.hh"
 
 void session::admin_menu() {
   status lock{};
@@ -16,29 +21,77 @@ void session::admin_menu() {
       db.add_user();
       break;
     case 2:
-      this->admin_submenu_find();
+      admin_submenu_find();
       break;
     case 3:
-      this->add_item();
+      add_item();
       break;
     case 4:
-      this->del_item();
+      del_item();
       break;
     case 5:
-      this->print();
+      admin_submenu_sort();
       break;
     case 6:
-      this->write();
+      this->print();
       break;
     case 7:
-      this->account_settings();
+      write();
       break;
     case 8:
+      account_settings();
+      break;
+    case 9:
       lock = finished;
       continue;
     case 0:
       lock = finished;
       cur = finished;
+      continue;
+    default:
+      continue;
+    }
+  }
+}
+
+void session::admin_submenu_sort() {
+  status lock{};
+  menu m(menu_sort);
+
+  while (lock == running) {
+    m.show();
+
+    int key{};
+    check_cin(key);
+    CLEAR();
+
+    auto sort_by_name = [](user_data l, user_data r) {
+      return l.user.name < r.user.name;
+    };
+
+    auto sort_by_number = [](user_data l, user_data r) {
+      return l.number < r.number;
+    };
+
+    auto sort_by_score = [](user_data l, user_data r) {
+      return l.score[0] > r.score[0];
+    };
+
+    switch (key) {
+    case 1:
+      std::sort(db.begin(), db.end(), sort_by_name);
+      printf("Success!!\n"), PAUSE();
+      break;
+    case 2:
+      std::sort(db.begin(), db.end(), sort_by_number);
+      printf("Success!!\n"), PAUSE();
+      break;
+    case 3:
+      std::sort(db.begin(), db.end(), sort_by_score);
+      printf("Success!!\n"), PAUSE();
+      break;
+    case 0:
+      lock = finished;
       continue;
     default:
       continue;
