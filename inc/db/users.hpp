@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
@@ -80,13 +81,20 @@ struct user_db : public database<user_data> {
   }
 
   index_t find_username(std::string name) {
-    index_t i{};
-    for (auto _ : data) {
-      if (name == _.user.name)
+    int count{}, c{};
+    index_t index{-1};
+    for (size_t i{}; i < data.size(); ++i, c = 0) {
+      for (size_t j{}; j < std::min(name.size(), data[i].user.name.size()); ++j)
+        (name[j] == data[i].user.name[j]) ? ++c : --c;
+      if (c == static_cast<int>(data[i].user.name.size()))
         return i;
-      ++i;
+      c -= (name.size() - data[i].user.name.size()) > 0
+               ? (name.size() - data[i].user.name.size())
+               : 0;
+      if (c > count)
+        count = c, index = i;
     }
-    return -1;
+    return index;
   }
 
   index_t find_number(size_t num) {
