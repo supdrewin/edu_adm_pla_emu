@@ -10,7 +10,7 @@ CXXFLAGS += \
 	-pipe \
 	-O2
 
-# statically linked binaries are not supported on Mac OS X
+# statically linked binaries are not supported on macOS
 ifeq ($(shell uname -a |grep Darwin), )
   LDFLAGS += -static
 endif
