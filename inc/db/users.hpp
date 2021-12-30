@@ -32,27 +32,27 @@ struct user_db : public database<user_data> {
 
   insert_username:
     printf("username: ");
-    std::cin >> tmp.u.username;
+    std::cin >> tmp.user.name;
 
-    if (find_username(tmp.u.username) != -1)
+    if (find_username(tmp.user.name) != -1)
       goto insert_username;
 
   insert_number:
     printf("number: ");
-    check_cin(tmp.num);
+    check_cin(tmp.number);
 
-    if (find_number(tmp.num) != -1)
+    if (find_number(tmp.number) != -1)
       goto insert_number;
 
     printf("scores:\n");
-    tmp.sc.resize(its.size() + 1);
+    tmp.score.resize(its.size() + 1);
     for (size_t i{}; i < its.size();) {
       printf("%s: ", its[i].c_str());
-      check_cin(tmp.sc[++i]);
-      tmp.sc[0] += tmp.sc[i];
+      check_cin(tmp.score[++i]);
+      tmp.score[0] += tmp.score[i];
     }
 
-    tmp.u.passwd = tmp.u.username;
+    tmp.user.passwd = tmp.user.name;
     data.push_back(tmp);
   }
 
@@ -60,9 +60,9 @@ struct user_db : public database<user_data> {
     its.add(it);
     size_t score;
     for (auto &_ : data) {
-      _.u.id ? (printf("%s: ", _.u.username.c_str()), check_cin(score),
-                _.sc[0] += score, _.sc.add(score))
-             : _.sc.add(0);
+      _.user.id ? (printf("%s: ", _.user.name.c_str()), check_cin(score),
+                   _.score[0] += score, _.score.add(score))
+                : _.score.add(0);
     }
   }
 
@@ -71,8 +71,8 @@ struct user_db : public database<user_data> {
       if (it == its[i].data()) {
         its.erase(i);
         for (auto &_ : data) {
-          _.sc[0] -= _.sc[i + 1];
-          _.sc.erase(i + 1);
+          _.score[0] -= _.score[i + 1];
+          _.score.erase(i + 1);
         }
         return true;
       }
@@ -82,7 +82,7 @@ struct user_db : public database<user_data> {
   index_t find_username(std::string name) {
     index_t i{};
     for (auto _ : data) {
-      if (name == _.u.username)
+      if (name == _.user.name)
         return i;
       ++i;
     }
@@ -92,7 +92,7 @@ struct user_db : public database<user_data> {
   index_t find_number(size_t num) {
     index_t i{};
     for (auto _ : data) {
-      if (num == _.num)
+      if (num == _.number)
         return i;
       ++i;
     }
@@ -103,7 +103,7 @@ struct user_db : public database<user_data> {
     std::vector<index_t> tmp;
     index_t i{};
     for (auto _ : data) {
-      if (_.u.id and sc == _.sc[0])
+      if (_.user.id and sc == _.score[0])
         tmp.push_back(i);
       ++i;
     }
@@ -119,14 +119,14 @@ struct user_db : public database<user_data> {
 
     for (auto _ : data) {
       ofs << '\n'
-          << _.u.username << '\t' << secure::write(_.u.passwd) << '\t' << _.num
-          << '\t' << _.u.id;
+          << _.user.name << '\t' << secure::write(_.user.passwd) << '\t'
+          << _.number << '\t' << _.user.id;
 
-      for (auto __ : _.sc)
+      for (auto __ : _.score)
         ofs << '\t' << __;
 
       if (not default_admin)
-        default_admin = (_.u.username == "root");
+        default_admin = (_.user.name == "root");
     }
 
     if (not default_admin) {
@@ -154,24 +154,24 @@ struct user_db : public database<user_data> {
 
     user_data tmp;
     for (size_t i{}; not ifs.eof(); ++i) {
-      ifs >> tmp.u.username >> tmp.u.passwd >> tmp.num >> tmp.u.id;
-      tmp.sc.resize(its.size() + 1);
+      ifs >> tmp.user.name >> tmp.user.passwd >> tmp.number >> tmp.user.id;
+      tmp.score.resize(its.size() + 1);
       for (size_t j{}; j < its.size() + 1; ++j)
-        ifs >> tmp.sc[j];
-      secure::read(tmp.u.passwd);
+        ifs >> tmp.score[j];
+      secure::read(tmp.user.passwd);
       data.push_back(tmp);
     }
   }
 
   void print_user(size_t i) {
-    printf("|%9s  |%11d |", data[i].u.username.c_str(),
-           static_cast<int>(data[i].num));
+    printf("|%9s  |%11d |", data[i].user.name.c_str(),
+           static_cast<int>(data[i].number));
     this->print_scores(i);
   }
 
   void print_scores(size_t i) {
     for (size_t j{}; j < its.size() + 1; ++j)
-      printf("%8d  |", static_cast<int>(data[i].sc[j]));
+      printf("%8d  |", static_cast<int>(data[i].score[j]));
     printf("\n");
   }
 };

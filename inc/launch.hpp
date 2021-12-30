@@ -49,7 +49,7 @@ public:
   void ask() {
     printf(SGR_BROWN_FOREGROUND SGR_BOLD
            "Username: " SGR_RESET_ALL SGR_BLACK_BACKGROUND);
-    std::cin >> unknown.username;
+    std::cin >> unknown.name;
     printf(SGR_BROWN_FOREGROUND SGR_BOLD
            "Passwd: " SGR_RESET_ALL SGR_BLACK_BACKGROUND SGR_BLACK_FOREGROUND);
     std::cin >> unknown.passwd;
@@ -58,10 +58,10 @@ public:
 
   void judge() {
     for (auto _ : db)
-      if (unknown.username == _.u.username) {
-        if (unknown.passwd == _.u.passwd) {
+      if (unknown.name == _.user.name) {
+        if (unknown.passwd == _.user.passwd) {
           status = success;
-          unknown.id = _.u.id;
+          unknown.id = _.user.id;
           return;
         } else {
           status = error_passwd;

@@ -12,20 +12,20 @@ enum user_identity {
 };
 
 struct base_user {
-  std::string username, passwd;
+  std::string name, passwd;
   size_t id;
 
-  base_user(user_identity i = student) : username(), passwd(), id(i) {}
+  base_user(user_identity i = student) : name(), passwd(), id(i) {}
 
-  bool operator==(base_user r) { return this->username == r.username; }
-  bool operator!=(base_user r) { return this->username != r.username; }
+  bool operator==(base_user r) { return this->name == r.name; }
+  bool operator!=(base_user r) { return this->name != r.name; }
 };
 
 struct user_data {
-  base_user u;
-  size_t num;
-  scores sc;
+  base_user user;
+  size_t number;
+  scores score;
   // std::vector<size_t> scores;
   user_data(user_identity i = student) //
-      : u(i), num(), sc() {}
+      : user(i), number(), score() {}
 };
